@@ -1,0 +1,72 @@
+# ==============================
+# Python
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# ==============================
+# Environment variables
+# ==============================
+.env
+.env.*
+
+# ==============================
+# Django
+# ==============================
+*.log
+local_settings.py
+
+# SQLite database
+db.sqlite3
+app/db.sqlite3
+
+# Django migrations cache
+*.pyc
+*.pyo
+
+# Media files (uploaded images)
+media/
+app/media/
+
+# Static files build
+staticfiles/
+
+# ==============================
+# Celery
+# ==============================
+celerybeat-schedule
+
+# ==============================
+# VS Code
+# ==============================
+.vscode/
+
+# ==============================
+# Mac / Linux system files
+# ==============================
+.DS_Store
+Thumbs.db
+
+# ==============================
+# Docker
+# ==============================
+*.tar
+*.gz
+
+# ==============================
+# Pytest / coverage
+# ==============================
+.coverage
+htmlcov/
+.pytest_cache/
+
+# ==============================
+# IDE
+# ==============================
+.idea/
