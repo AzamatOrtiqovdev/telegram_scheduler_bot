@@ -4,6 +4,7 @@ from celery import shared_task
 from dotenv import load_dotenv
 from django.utils import timezone
 from aiogram import Bot
+from aiogram.types import FSInputFile
 
 from .models import Script
 
@@ -15,8 +16,24 @@ async def send_telegram_messages(messages):
     bot = Bot(token=TOKEN)
     try:
         for item in messages:
-            await bot.send_message(item["chat_id"], item["text"])
-            print(f"[SENT OK] -> {item['group_name']}")
+            chat_id = item["chat_id"]
+            text = item["text"]
+            image_path = item.get("image_path")
+
+            if image_path:
+                photo = FSInputFile(image_path)
+                await bot.send_photo(
+                    chat_id=chat_id,
+                    photo=photo,
+                    caption=text or ""
+                )
+                print(f"[PHOTO SENT OK] -> {item['group_name']}")
+            else:
+                await bot.send_message(
+                    chat_id=chat_id,
+                    text=text or ""
+                )
+                print(f"[TEXT SENT OK] -> {item['group_name']}")
     finally:
         await bot.session.close()
 
@@ -54,9 +71,7 @@ def send_scheduled_scripts():
             same_year = now.year == send_time.year
             same_month = now.month == send_time.month
 
-            print(
-                f"[ONCE CHECK] same_year={same_year}, same_month={same_month}"
-            )
+            print(f"[ONCE CHECK] same_year={same_year}, same_month={same_month}")
 
             if same_year and same_month and same_day and same_hour and same_minute:
                 if script.last_sent_at:
@@ -89,20 +104,23 @@ def send_scheduled_scripts():
 
             text = script.text_uz if group.language == "uz" else script.text_ru
 
-            if not text:
-                print(f"[SKIP GROUP] text empty -> {group.name}")
+            if not text and not script.image:
+                print(f"[SKIP GROUP] no text and no image -> {group.name}")
                 continue
+
+            image_path = script.image.path if script.image else None
 
             print(
                 f"[SEND TRY] script={script.title}, "
                 f"group={group.name}, language={group.language}, "
-                f"chat_id={group.chat_id}"
+                f"chat_id={group.chat_id}, image={bool(image_path)}"
             )
 
             messages_to_send.append({
                 "chat_id": group.chat_id,
                 "text": text,
                 "group_name": group.name,
+                "image_path": image_path,
             })
 
         if not messages_to_send:
