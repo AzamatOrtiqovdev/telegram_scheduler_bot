@@ -1,10 +1,11 @@
+﻿import asyncio
 import os
-import asyncio
-from celery import shared_task
-from dotenv import load_dotenv
-from django.utils import timezone
+
 from aiogram import Bot
 from aiogram.types import FSInputFile
+from celery import shared_task
+from django.utils import timezone
+from dotenv import load_dotenv
 
 from .models import Script
 
@@ -25,13 +26,13 @@ async def send_telegram_messages(messages):
                 await bot.send_photo(
                     chat_id=chat_id,
                     photo=photo,
-                    caption=text or ""
+                    caption=text or "",
                 )
                 print(f"[PHOTO SENT OK] -> {item['group_name']}")
             else:
                 await bot.send_message(
                     chat_id=chat_id,
-                    text=text or ""
+                    text=text or "",
                 )
                 print(f"[TEXT SENT OK] -> {item['group_name']}")
     finally:
@@ -43,9 +44,10 @@ def send_scheduled_scripts():
     now = timezone.localtime()
     print(f"[TASK START] now = {now}")
 
-    scripts = Script.objects.filter(
-        is_active=True
-    ).prefetch_related("groups")
+    scripts = Script.objects.filter(is_active=True).prefetch_related(
+        "branches__groups",
+        "groups",
+    )
 
     print(f"[TASK INFO] scripts count = {scripts.count()}")
 
@@ -105,8 +107,11 @@ def send_scheduled_scripts():
         has_uz_text = bool(script.text_uz and script.text_uz.strip())
         has_ru_text = bool(script.text_ru and script.text_ru.strip())
         image_path = script.image.path if script.image else None
+        target_groups = script.get_target_groups()
 
-        for group in script.groups.all():
+        print(f"[TARGET GROUPS] count={target_groups.count()} for script={script.title}")
+
+        for group in target_groups:
             if not group.is_active:
                 print(f"[SKIP GROUP] inactive -> {group.name}")
                 continue
@@ -135,7 +140,6 @@ def send_scheduled_scripts():
                 print(f"[SKIP GROUP] unsupported language -> {group.name}")
                 continue
 
-            # Agar text ham yo'q, rasm ham yo'q bo'lsa yubormaymiz
             if not text and not image_path:
                 print(f"[SKIP GROUP] no suitable text and no image -> {group.name}")
                 continue
@@ -146,12 +150,14 @@ def send_scheduled_scripts():
                 f"chat_id={group.chat_id}, image={bool(image_path)}"
             )
 
-            messages_to_send.append({
-                "chat_id": group.chat_id,
-                "text": text,
-                "group_name": group.name,
-                "image_path": image_path,
-            })
+            messages_to_send.append(
+                {
+                    "chat_id": group.chat_id,
+                    "text": text,
+                    "group_name": group.name,
+                    "image_path": image_path,
+                }
+            )
 
         if not messages_to_send:
             print(f"[SKIP] No valid groups for script: {script.title}")
@@ -166,3 +172,4 @@ def send_scheduled_scripts():
             print(f"[TASK ERROR] {script.title}: {e}")
 
     print("[TASK END]")
+
