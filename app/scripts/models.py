@@ -20,6 +20,7 @@ class Group(models.Model):
 class Script(models.Model):
     REPEAT_CHOICES = [
         ("once", "Bir marta"),
+        ("daily", "Har kuni"),
         ("monthly", "Har oy"),
     ]
 

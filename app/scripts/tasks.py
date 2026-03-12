@@ -88,10 +88,23 @@ def send_scheduled_scripts():
                         continue
                 should_send = True
 
+        elif script.repeat_type == "daily":
+            if same_hour and same_minute:
+                if script.last_sent_at:
+                    last_sent = timezone.localtime(script.last_sent_at)
+                    if last_sent.date() == now.date():
+                        print(f"[SKIP] Already sent today: {script.title}")
+                        continue
+                should_send = True
+
         if not should_send:
             continue
 
         messages_to_send = []
+
+        has_uz_text = bool(script.text_uz and script.text_uz.strip())
+        has_ru_text = bool(script.text_ru and script.text_ru.strip())
+        image_path = script.image.path if script.image else None
 
         for group in script.groups.all():
             if not group.is_active:
@@ -102,13 +115,30 @@ def send_scheduled_scripts():
                 print(f"[SKIP GROUP] language not set -> {group.name}")
                 continue
 
-            text = script.text_uz if group.language == "uz" else script.text_ru
+            text = None
 
-            if not text and not script.image:
-                print(f"[SKIP GROUP] no text and no image -> {group.name}")
+            if group.language == "uz":
+                if has_uz_text:
+                    text = script.text_uz
+                elif has_ru_text:
+                    print(f"[SKIP GROUP] uz text missing -> {group.name}")
+                    continue
+
+            elif group.language == "ru":
+                if has_ru_text:
+                    text = script.text_ru
+                elif has_uz_text:
+                    print(f"[SKIP GROUP] ru text missing -> {group.name}")
+                    continue
+
+            else:
+                print(f"[SKIP GROUP] unsupported language -> {group.name}")
                 continue
 
-            image_path = script.image.path if script.image else None
+            # Agar text ham yo'q, rasm ham yo'q bo'lsa yubormaymiz
+            if not text and not image_path:
+                print(f"[SKIP GROUP] no suitable text and no image -> {group.name}")
+                continue
 
             print(
                 f"[SEND TRY] script={script.title}, "
