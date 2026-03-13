@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 import os
 import sys
 from pathlib import Path
@@ -21,6 +21,7 @@ from aiogram.types import ChatMemberUpdated, Message
 from scripts.models import Group
 
 TOKEN = os.getenv("BOT_TOKEN")
+WELCOME_MESSAGE = "Ассалому алейкум, я бот уведомлений Times School. Я буду сообщать вам новости 😊"
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN topilmadi. .env faylni tekshiring.")
@@ -128,6 +129,12 @@ async def bot_added_to_group(event: ChatMemberUpdated):
             print(f"[NEW GROUP SAVED] {group.name} | {group.chat_id}")
         else:
             print(f"[GROUP UPDATED] {group.name} | {group.chat_id}")
+
+        try:
+            await bot.send_message(chat.id, WELCOME_MESSAGE)
+            print(f"[WELCOME SENT] -> {chat.title or chat.id}")
+        except Exception as e:
+            print(f"[WELCOME ERROR] {chat.title or chat.id}: {e}")
 
 
 @dp.message()
