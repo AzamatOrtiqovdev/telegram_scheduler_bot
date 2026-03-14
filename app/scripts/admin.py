@@ -1,6 +1,10 @@
 ﻿from django.contrib import admin
 from django.db.models import Count, Prefetch, Q
 
+admin.site.site_header = 'Times School Notification bot'
+admin.site.site_title = 'Times School Notification bot'
+admin.site.index_title = 'Times School Notification bot'
+
 from .models import Branch, Group, Script
 
 
@@ -188,3 +192,4 @@ class ScriptAdmin(admin.ModelAdmin):
             Prefetch("branches", queryset=Branch.objects.prefetch_related("groups")),
             "groups",
         )
+

@@ -1,0 +1,10 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">Times School Logo</title>
+  <desc id="desc">Times School wordmark with red circle and black arrow.</desc>
+  <rect width="1200" height="320" fill="#000000"/>
+  <circle cx="185" cy="160" r="145" fill="#df0015"/>
+  <polygon points="90,55 212,160 90,265 145,160" fill="#000000"/>
+  <text x="450" y="120" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="118" font-weight="800">TIMES</text>
+  <text x="450" y="235" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="118" font-weight="800">SCHOOL</text>
+  <text x="455" y="293" fill="#1d1d1d" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="400">Trust your time to us</text>
+</svg>
