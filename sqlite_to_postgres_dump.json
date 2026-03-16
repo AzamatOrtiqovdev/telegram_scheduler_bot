@@ -1,0 +1,2242 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "scripts",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "scripts",
+    "model": "script"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "scripts",
+    "model": "branch"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3cdoqacvaoa0ggx85o80c663fbxgojt6",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAUBf-FtSHlJeDSfb-B3AdI1dCktCvjv2uTLnR7Zua8RIJtrWnreUkTi4tQ4vS7IdAjtx3wHdptljS3dZlQ7oo8aJfjzPl5Pdy_gwq9fmvKmplj1mSAWBlPxjNbWyIyIhLZWM7D4GxA40MmpQpGBToSsAtOifcHJWU5Gw:1w2B9x:Ft3PXGJnajpsTjTrGUKVn3Xd27Ze7GyoLq0MkhHvRig",
+    "expire_date": "2026-03-30T16:51:17.729Z"
+  }
+},
+{
+  "model": "scripts.branch",
+  "pk": 1,
+  "fields": {
+    "name": "Times School Shohsaroy",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.branch",
+  "pk": 2,
+  "fields": {
+    "name": "Times School Yunusobod 19",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.branch",
+  "pk": 3,
+  "fields": {
+    "name": "qwerty",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.group",
+  "pk": 1,
+  "fields": {
+    "name": "Sinov Uchun guruh",
+    "chat_id": -1003488416282,
+    "branch": 3,
+    "language": "uz",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.group",
+  "pk": 2,
+  "fields": {
+    "name": "Группа для тестирования",
+    "chat_id": -1003841336945,
+    "branch": 1,
+    "language": "ru",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.group",
+  "pk": 5,
+  "fields": {
+    "name": "sinov uchun",
+    "chat_id": -1003674539840,
+    "branch": 1,
+    "language": "ru",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.group",
+  "pk": 6,
+  "fields": {
+    "name": "yangi guruh",
+    "chat_id": -1003688519285,
+    "branch": 2,
+    "language": "ru",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.group",
+  "pk": 7,
+  "fields": {
+    "name": "Test guruh",
+    "chat_id": -1003610036476,
+    "branch": 2,
+    "language": "uz",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.group",
+  "pk": 9,
+  "fields": {
+    "name": "Coin beramiz",
+    "chat_id": -4749036804,
+    "branch": null,
+    "language": "ru",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.group",
+  "pk": 10,
+  "fields": {
+    "name": "new group",
+    "chat_id": -1003334088487,
+    "branch": 3,
+    "language": "uz",
+    "is_active": true
+  }
+},
+{
+  "model": "scripts.script",
+  "pk": 1,
+  "fields": {
+    "title": "Oylik test xabar",
+    "text_uz": "Assalomu alaykum. Bu test xabar.",
+    "text_ru": "Здравствуйте. Это тестовое сообщение.",
+    "image": "scripts/download.jpg",
+    "repeat_type": "monthly",
+    "send_time": "2026-03-08T18:14:00Z",
+    "is_active": true,
+    "last_sent_at": "2026-03-08T18:14:06.665Z",
+    "branches": [],
+    "groups": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "scripts.script",
+  "pk": 2,
+  "fields": {
+    "title": "Qadrli ayollar",
+    "text_uz": "🌸 MARCH 8 - Happy International Women's Day!\r\n\r\nWe congratulate all our respected mothers, kind sisters, and our incomparable beautiful girls on International Women's Day!\r\n\r\nThe true strength of any society is embodied in the will, patience, and wisdom of women.\r\n\r\nEvery safe home and a well-rounded generation are built with the hard work and love of our mothers.\r\n\r\nWe wish you strong health, family happiness, and may your life bloom like spring! 🌷",
+    "text_ru": "🌸 8 МАРТА - С Международным женским днем!\r\n\r\nМы поздравляем всех наших уважаемых матерей, добрых сестер и наших несравненно прекрасных девушек с Международным женским днем!\r\n\r\nИстинная сила любого общества воплощена в воле, терпении и мудрости женщин.\r\n\r\nКаждый благополучный дом и всесторонне развитое поколение строятся благодаря упорному труду и любви наших матерей.\r\n\r\nЖелаем вам крепкого здоровья, семейного счастья и пусть ваша жизнь расцветает, как весна! 🌷",
+    "image": "",
+    "repeat_type": "once",
+    "send_time": "2026-03-09T09:11:00Z",
+    "is_active": true,
+    "last_sent_at": "2026-03-09T09:11:05.461Z",
+    "branches": [],
+    "groups": [
+      1,
+      7,
+      5,
+      6,
+      2
+    ]
+  }
+},
+{
+  "model": "scripts.script",
+  "pk": 3,
+  "fields": {
+    "title": "Yaxshi insonlarga",
+    "text_uz": "yaxshi insonlarga yaxshi yangilik",
+    "text_ru": "хорошие новости для хороших людей",
+    "image": "",
+    "repeat_type": "monthly",
+    "send_time": "2026-03-16T16:29:00Z",
+    "is_active": true,
+    "last_sent_at": "2026-03-16T16:29:05.478Z",
+    "branches": [],
+    "groups": [
+      1,
+      7,
+      5,
+      6,
+      2
+    ]
+  }
+},
+{
+  "model": "scripts.script",
+  "pk": 4,
+  "fields": {
+    "title": "Achiq hayot",
+    "text_uz": "To'ylar muborak, baxtli bo'lgin albat\r\nSevgan yoringga munosib bo'l faqat\r\nMenga esa sabr-u toqat tila\r\nAxir, mening yuragim qonga to'la\r\nAchiq hayot, dil esa benajot\r\nBevafolarning dastidan voy-dod!\r\nKetar bo'ldim, man uchar bo'ldim\r\nOsmonlarga man ketar bo'ldim",
+    "text_ru": "Счастливых свадеб, пусть вы будете счастливы!\r\nПросто будьте достойны своей возлюбленной!\r\nИ пожелайте мне терпения и снисхождения!\r\nВ конце концов, мое сердце полно крови!\r\nЖизнь, полная радости, но сердце, полное печали!\r\nГоре рукам неверных!\r\nЯ собирался уйти, я собирался взлететь!\r\nЯ собирался взлететь в небеса!",
+    "image": "",
+    "repeat_type": "daily",
+    "send_time": "2026-03-16T16:18:00Z",
+    "is_active": true,
+    "last_sent_at": "2026-03-16T16:18:00.232Z",
+    "branches": [
+      1
+    ],
+    "groups": []
+  }
+},
+{
+  "model": "scripts.script",
+  "pk": 5,
+  "fields": {
+    "title": "Panoh | Asragin",
+    "text_uz": "",
+    "text_ru": "",
+    "image": "scripts/panoh.jpg",
+    "repeat_type": "once",
+    "send_time": "2026-03-09T19:58:00Z",
+    "is_active": true,
+    "last_sent_at": "2026-03-09T19:58:00.231Z",
+    "branches": [],
+    "groups": [
+      1,
+      7,
+      5,
+      6,
+      2
+    ]
+  }
+},
+{
+  "model": "scripts.script",
+  "pk": 6,
+  "fields": {
+    "title": "Bo'rilar | волки",
+    "text_uz": "Fizik xususiyatlari: Og'irligi 50-100 funt (143 funtgacha) bo'lgan bo'rilarning uzunligi 4-6 fut, izolyatsiya uchun zich, ikki qavatli mo'ynali bo'ladi. Ularning 42 ta tishi, ajoyib eshitish qobiliyati va odamlarga qaraganda 100 baravar kuchli hid bilish qobiliyati mavjud.",
+    "text_ru": "Физические характеристики: Волки весят от 50 до 100 фунтов (до 143 фунтов), их длина составляет от 4 до 6 футов, а шерсть имеет густой двухслойный мех для теплоизоляции. Они обладают 42 зубами, исключительным слухом и обонянием в 100 раз сильнее человеческого.",
+    "image": "scripts/wolf.jpg",
+    "repeat_type": "daily",
+    "send_time": "2026-03-12T07:48:00Z",
+    "is_active": true,
+    "last_sent_at": "2026-03-12T07:48:05.467Z",
+    "branches": [],
+    "groups": [
+      1,
+      7,
+      5,
+      6,
+      2
+    ]
+  }
+},
+{
+  "model": "scripts.script",
+  "pk": 7,
+  "fields": {
+    "title": "Wikipedia",
+    "text_uz": "Vikipediya - 2001-yil 15-yanvarda Jimmi Uels va Larri Sanger tomonidan ishga tushirilgan bepul, ko'p tilli onlayn ensiklopediya. Notijorat Wikimedia Jamg'armasi tomonidan boshqariladigan bu dunyodagi eng katta, eng ko'p o'qilgan ma'lumotnoma bo'lib, Vikipediyachilar deb nomlanuvchi ko'ngilli muharrirlar tomonidan hamkorlikda yozilgan. U \"har kim tahrirlashi mumkin\" modeli ostida ishlaydi va 300 dan ortiq tillarda 66 milliondan ortiq maqolalarni o'z ichiga oladi.",
+    "text_ru": "Википедия — это бесплатная многоязычная онлайн-энциклопедия, запущенная 15 января 2001 года Джимми Уэйлсом и Ларри Сангером. Управляемая некоммерческим фондом Wikimedia Foundation, она является крупнейшим и наиболее читаемым справочным ресурсом в мире, созданным совместно редакторами-волонтерами, известными как википедисты. Она работает по модели «редактировать может любой» и содержит более 66 миллионов статей на более чем 300 языках.",
+    "image": "scripts/download.jpg",
+    "repeat_type": "once",
+    "send_time": "2026-03-12T12:09:00Z",
+    "is_active": true,
+    "last_sent_at": "2026-03-12T12:09:00.106Z",
+    "branches": [
+      1
+    ],
+    "groups": []
+  }
+},
+{
+  "model": "scripts.script",
+  "pk": 8,
+  "fields": {
+    "title": "qwerty",
+    "text_uz": "wertyui gybbubnu",
+    "text_ru": "нрнрнр гриниги",
+    "image": "scripts/Screenshot_106.png",
+    "repeat_type": "daily",
+    "send_time": "2026-03-13T10:08:00Z",
+    "is_active": true,
+    "last_sent_at": "2026-03-13T10:08:05.776Z",
+    "branches": [
+      1
+    ],
+    "groups": []
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add script",
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "codename": "add_script"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change script",
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "codename": "change_script"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete script",
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "codename": "delete_script"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view script",
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "codename": "view_script"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Branch",
+    "content_type": [
+      "scripts",
+      "branch"
+    ],
+    "codename": "add_branch"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Branch",
+    "content_type": [
+      "scripts",
+      "branch"
+    ],
+    "codename": "change_branch"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Branch",
+    "content_type": [
+      "scripts",
+      "branch"
+    ],
+    "codename": "delete_branch"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Branch",
+    "content_type": [
+      "scripts",
+      "branch"
+    ],
+    "codename": "view_branch"
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$720000$aA35O9wA3uyBW2kwyU1BE6$Bq6RSvvrjQK4sPxvR6snug+5f/jeOrfgyrwDoRLEYXc=",
+    "last_login": "2026-03-16T16:51:17.721Z",
+    "is_superuser": true,
+    "username": "azamat",
+    "first_name": "",
+    "last_name": "",
+    "email": "ortiqovazamat890@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-03-08T06:46:14.254Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-03-08T08:44:00.023Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "1",
+    "object_repr": "Test Uzbek Guruh (uz)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-03-08T08:57:15.656Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2026-03-08T09:16:57.813Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2026-03-08T09:48:37.942Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "1",
+    "object_repr": "Sinov Uchun guruh (uz)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Chat id\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2026-03-08T09:49:35.104Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "2",
+    "object_repr": "Группа для тестирования (ru)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2026-03-08T10:04:55.620Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "2",
+    "object_repr": "Группа для тестирования (ru)",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2026-03-08T10:05:52.914Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2026-03-08T10:09:33.123Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2026-03-08T10:49:50.958Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2026-03-08T10:53:29.819Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2026-03-08T10:59:08.071Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2026-03-08T10:59:25.779Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2026-03-08T11:07:35.040Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2026-03-08T11:10:51.213Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2026-03-08T11:17:43.487Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2026-03-08T11:25:35.400Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2026-03-08T11:25:52.827Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2026-03-08T12:58:57.808Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "3",
+    "object_repr": "yangi guruh (uz)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Language\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2026-03-08T17:04:32.629Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\", \"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2026-03-08T17:06:52.756Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2026-03-08T17:15:53.766Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2026-03-08T17:22:30.878Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "4",
+    "object_repr": "sinov uchun (ru)",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2026-03-08T17:23:28.693Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2026-03-08T17:24:58.306Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2026-03-08T17:27:43.173Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "4",
+    "object_repr": "sinov uchun (ru)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2026-03-08T17:28:42.127Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2026-03-08T18:12:44.865Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2026-03-08T18:13:15.200Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "1",
+    "object_repr": "Oylik test xabar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2026-03-08T18:16:58.529Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "2",
+    "object_repr": "Qadrli ayollar",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2026-03-08T18:21:19.408Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "2",
+    "object_repr": "Qadrli ayollar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2026-03-08T18:27:42.240Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2026-03-08T18:30:11.577Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2026-03-08T18:35:39.012Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2026-03-08T18:37:56.924Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2026-03-08T18:43:18.499Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2026-03-08T18:43:28.753Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2026-03-08T18:45:00.085Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\", \"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2026-03-08T18:51:03.486Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2026-03-08T19:02:37.031Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\", \"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2026-03-08T19:04:36.587Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2026-03-08T19:08:33.504Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2026-03-08T19:11:18.136Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2026-03-08T19:20:55.315Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\", \"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 44,
+  "fields": {
+    "action_time": "2026-03-08T19:47:33.673Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "4",
+    "object_repr": "sinov uchun (ru) | -5143817009",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 45,
+  "fields": {
+    "action_time": "2026-03-08T19:47:47.703Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "3",
+    "object_repr": "yangi guruh (uz) | -5112482421",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 46,
+  "fields": {
+    "action_time": "2026-03-08T19:48:51.022Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\", \"Groups\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 47,
+  "fields": {
+    "action_time": "2026-03-09T08:47:03.492Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "8",
+    "object_repr": "Test guruh (uz) | -5189767047",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Language\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 48,
+  "fields": {
+    "action_time": "2026-03-09T08:48:39.227Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\", \"Groups\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 49,
+  "fields": {
+    "action_time": "2026-03-09T08:50:06.515Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Groups\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 50,
+  "fields": {
+    "action_time": "2026-03-09T08:50:26.560Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 51,
+  "fields": {
+    "action_time": "2026-03-09T09:06:26.093Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "8",
+    "object_repr": "Test guruh (uz) | -5189767047",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 52,
+  "fields": {
+    "action_time": "2026-03-09T09:08:00.399Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "2",
+    "object_repr": "Qadrli ayollar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\", \"Groups\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 53,
+  "fields": {
+    "action_time": "2026-03-09T09:09:36.118Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "7",
+    "object_repr": "Test guruh (uz) | -1003610036476",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Language\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 54,
+  "fields": {
+    "action_time": "2026-03-09T09:10:03.993Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "2",
+    "object_repr": "Qadrli ayollar",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 55,
+  "fields": {
+    "action_time": "2026-03-09T12:26:42.956Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 56,
+  "fields": {
+    "action_time": "2026-03-09T19:10:35.936Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "5",
+    "object_repr": "Panoh | Asragin",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 57,
+  "fields": {
+    "action_time": "2026-03-09T19:53:28.175Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "5",
+    "object_repr": "Panoh | Asragin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Text ru\", \"Send time\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 58,
+  "fields": {
+    "action_time": "2026-03-09T19:57:02.722Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "5",
+    "object_repr": "Panoh | Asragin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Text uz\", \"Send time\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 59,
+  "fields": {
+    "action_time": "2026-03-10T07:15:17.894Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "6",
+    "object_repr": "Bo'rilar | волки",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 60,
+  "fields": {
+    "action_time": "2026-03-10T07:16:02.846Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "6",
+    "object_repr": "Bo'rilar | волки",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 61,
+  "fields": {
+    "action_time": "2026-03-12T07:47:46.099Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "6",
+    "object_repr": "Bo'rilar | волки",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\", \"Last sent at\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 62,
+  "fields": {
+    "action_time": "2026-03-12T11:45:16.884Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "branch"
+    ],
+    "object_id": "1",
+    "object_repr": "Times School Shohsaroy",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 63,
+  "fields": {
+    "action_time": "2026-03-12T11:45:48.653Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "branch"
+    ],
+    "object_id": "2",
+    "object_repr": "Times School Yunusobod 19",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 64,
+  "fields": {
+    "action_time": "2026-03-12T11:54:10.705Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "1",
+    "object_repr": "Sinov Uchun guruh (uz) | Times School Shohsaroy | -1003488416282",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Branch\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 65,
+  "fields": {
+    "action_time": "2026-03-12T11:54:20.136Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "7",
+    "object_repr": "Test guruh (uz) | Times School Yunusobod 19 | -1003610036476",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Branch\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 66,
+  "fields": {
+    "action_time": "2026-03-12T11:54:25.237Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "5",
+    "object_repr": "sinov uchun (ru) | Times School Shohsaroy | -1003674539840",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Branch\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 67,
+  "fields": {
+    "action_time": "2026-03-12T11:54:30.254Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "6",
+    "object_repr": "yangi guruh (ru) | Times School Yunusobod 19 | -1003688519285",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Branch\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 68,
+  "fields": {
+    "action_time": "2026-03-12T11:54:35.194Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "2",
+    "object_repr": "Группа для тестирования (ru) | Times School Shohsaroy | -1003841336945",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Branch\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 69,
+  "fields": {
+    "action_time": "2026-03-12T12:01:26.986Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "7",
+    "object_repr": "Wikipedia",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 70,
+  "fields": {
+    "action_time": "2026-03-12T12:07:23.683Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "7",
+    "object_repr": "Wikipedia",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\", \"Branches\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 71,
+  "fields": {
+    "action_time": "2026-03-13T09:58:10.170Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "branch"
+    ],
+    "object_id": "3",
+    "object_repr": "qwerty",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 72,
+  "fields": {
+    "action_time": "2026-03-13T09:58:52.781Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "1",
+    "object_repr": "Sinov Uchun guruh (uz) | qwerty | -1003488416282",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Branch\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 73,
+  "fields": {
+    "action_time": "2026-03-13T10:07:38.315Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "8",
+    "object_repr": "qwerty",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 74,
+  "fields": {
+    "action_time": "2026-03-13T10:21:18.068Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "9",
+    "object_repr": "Coin beramiz (ru) | no-branch | -4749036804",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 75,
+  "fields": {
+    "action_time": "2026-03-13T10:21:26.527Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "9",
+    "object_repr": "Coin beramiz (ru) | Times School Shohsaroy | -4749036804",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Branch\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 76,
+  "fields": {
+    "action_time": "2026-03-13T10:37:48.905Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "9",
+    "object_repr": "Coin beramiz (ru) | Times School Shohsaroy | -4749036804",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 77,
+  "fields": {
+    "action_time": "2026-03-13T15:41:51.042Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "10",
+    "object_repr": "new group (uz) | qwerty | -5274052414",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Branch\", \"Language\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 78,
+  "fields": {
+    "action_time": "2026-03-16T16:06:09.673Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\", \"Branches\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 79,
+  "fields": {
+    "action_time": "2026-03-16T16:11:52.628Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\", \"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 80,
+  "fields": {
+    "action_time": "2026-03-16T16:14:33.816Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 81,
+  "fields": {
+    "action_time": "2026-03-16T16:17:01.286Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "4",
+    "object_repr": "Achiq hayot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 82,
+  "fields": {
+    "action_time": "2026-03-16T16:19:14.893Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "group"
+    ],
+    "object_id": "9",
+    "object_repr": "Coin beramiz (ru) | no-branch | -4749036804",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Branch\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 83,
+  "fields": {
+    "action_time": "2026-03-16T16:27:38.900Z",
+    "user": [
+      "azamat"
+    ],
+    "content_type": [
+      "scripts",
+      "script"
+    ],
+    "object_id": "3",
+    "object_repr": "Yaxshi insonlarga",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Repeat type\", \"Send time\"]}}]"
+  }
+}
+]

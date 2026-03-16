@@ -1,4 +1,4 @@
-﻿import asyncio
+import asyncio
 import logging
 import os
 import sys
@@ -12,7 +12,7 @@ sys.path.append(str(BASE_DIR))
 
 import django
 
-load_dotenv()
+load_dotenv(BASE_DIR.parent / ".env")
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
