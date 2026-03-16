@@ -1,4 +1,5 @@
 ﻿import asyncio
+import logging
 import os
 import sys
 from pathlib import Path
@@ -20,32 +21,31 @@ from aiogram import Bot, Dispatcher
 from aiogram.types import ChatMemberUpdated, Message
 from scripts.models import Group
 
-TOKEN = os.getenv("BOT_TOKEN")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 WELCOME_MESSAGE = "Ассалому алейкум, я бот уведомлений Times School. Я буду сообщать вам новости 😊"
+logger = logging.getLogger(__name__)
 
-if not TOKEN:
+if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN topilmadi. .env faylni tekshiring.")
 
-bot = Bot(token=TOKEN)
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
+def _default_group_name(name: str | None) -> str:
+    return name or "No name"
+
+
 def merge_group_records(old_chat_id: int, new_chat_id: int, name: str):
-    """
-    Eski oddiy group id sini yangi supergroup id ga birlashtiradi.
-    """
     old_group = Group.objects.filter(chat_id=old_chat_id).first()
     new_group = Group.objects.filter(chat_id=new_chat_id).first()
 
     if old_group and new_group:
-        # Ikkalasi ham bo'lsa, eski yozuvni o'chirib, yangisini saqlaymiz
-        # Til yo'qolib ketmasligi uchun kerak bo'lsa ko'chirib o'tkazamiz
         if not new_group.language and old_group.language:
             new_group.language = old_group.language
         new_group.name = name
         new_group.is_active = True
         new_group.save()
-
         old_group.delete()
         return new_group, False
 
@@ -72,9 +72,6 @@ def merge_group_records(old_chat_id: int, new_chat_id: int, name: str):
 
 
 def save_group_sync(chat_id: int, name: str):
-    """
-    Oddiy saqlash / yangilash.
-    """
     existing = Group.objects.filter(chat_id=chat_id).first()
     if existing:
         existing.name = name
@@ -82,7 +79,6 @@ def save_group_sync(chat_id: int, name: str):
         existing.save(update_fields=["name", "is_active"])
         return existing, False
 
-    # Agar yangi id supergroup bo'lsa va shu nomli eski oddiy group bo'lsa, birlashtiramiz
     if str(chat_id).startswith("-100"):
         old_group_same_name = (
             Group.objects.filter(name=name)
@@ -106,35 +102,48 @@ def save_group_sync(chat_id: int, name: str):
     return group, True
 
 
+def _log_group_sync_result(action: str, group: Group, created: bool) -> None:
+    state = "created" if created else "updated"
+    logger.info("%s: %s group '%s' (%s)", action, state, group.name, group.chat_id)
+
+
+def _became_active_member(event: ChatMemberUpdated) -> bool:
+    old_status = event.old_chat_member.status
+    new_status = event.new_chat_member.status
+    return old_status in ["left", "kicked"] and new_status in ["member", "administrator"]
+
+
+async def _send_welcome_message(chat_id: int, chat_label: str) -> None:
+    try:
+        await bot.send_message(chat_id, WELCOME_MESSAGE)
+        logger.info("Welcome message sent to '%s'", chat_label)
+    except Exception:
+        logger.exception("Failed to send welcome message to '%s'", chat_label)
+
+
+async def _sync_group(chat_id: int, name: str, action: str):
+    group, created = await sync_to_async(save_group_sync)(chat_id, name)
+    _log_group_sync_result(action, group, created)
+    return group, created
+
+
+async def _handle_group_migration(old_chat_id: int, new_chat_id: int, name: str, action: str) -> None:
+    group, created = await sync_to_async(merge_group_records)(old_chat_id, new_chat_id, name)
+    _log_group_sync_result(action, group, created)
+
+
 @dp.my_chat_member()
 async def bot_added_to_group(event: ChatMemberUpdated):
     chat = event.chat
-
     if chat.type not in ["group", "supergroup"]:
         return
 
-    old_status = event.old_chat_member.status
-    new_status = event.new_chat_member.status
+    if not _became_active_member(event):
+        return
 
-    became_member = old_status in ["left", "kicked"] and new_status in ["member", "administrator"]
-    became_admin = old_status == "left" and new_status == "administrator"
-
-    if became_member or became_admin:
-        group, created = await sync_to_async(save_group_sync)(
-            chat.id,
-            chat.title or "No name"
-        )
-
-        if created:
-            print(f"[NEW GROUP SAVED] {group.name} | {group.chat_id}")
-        else:
-            print(f"[GROUP UPDATED] {group.name} | {group.chat_id}")
-
-        try:
-            await bot.send_message(chat.id, WELCOME_MESSAGE)
-            print(f"[WELCOME SENT] -> {chat.title or chat.id}")
-        except Exception as e:
-            print(f"[WELCOME ERROR] {chat.title or chat.id}: {e}")
+    chat_name = _default_group_name(chat.title)
+    await _sync_group(chat.id, chat_name, "Group membership update")
+    await _send_welcome_message(chat.id, chat.title or str(chat.id))
 
 
 @dp.message()
@@ -142,48 +151,37 @@ async def group_message_handler(message: Message):
     if message.chat.type not in ["group", "supergroup"]:
         return
 
-    # Muhim: oddiy group -> supergroup migratsiya update
+    chat_name = _default_group_name(message.chat.title)
+
     if message.migrate_to_chat_id:
-        group, created = await sync_to_async(merge_group_records)(
+        await _handle_group_migration(
             message.chat.id,
             message.migrate_to_chat_id,
-            message.chat.title or "No name"
+            chat_name,
+            "Group migrated to supergroup",
         )
-
-        if created:
-            print(f"[GROUP MIGRATED - CREATED] {group.name} | {group.chat_id}")
-        else:
-            print(f"[GROUP MIGRATED - MERGED] {group.name} | {group.chat_id}")
         return
 
     if message.migrate_from_chat_id:
-        group, created = await sync_to_async(merge_group_records)(
+        await _handle_group_migration(
             message.migrate_from_chat_id,
             message.chat.id,
-            message.chat.title or "No name"
+            chat_name,
+            "Group migrated from legacy id",
         )
-
-        if created:
-            print(f"[GROUP MIGRATED FROM - CREATED] {group.name} | {group.chat_id}")
-        else:
-            print(f"[GROUP MIGRATED FROM - MERGED] {group.name} | {group.chat_id}")
         return
 
-    group, created = await sync_to_async(save_group_sync)(
-        message.chat.id,
-        message.chat.title or "No name"
-    )
-
-    if created:
-        print(f"[GROUP SAVED FROM MESSAGE] {group.name} | {group.chat_id}")
-    else:
-        print(f"[GROUP UPDATED FROM MESSAGE] {group.name} | {group.chat_id}")
+    await _sync_group(message.chat.id, chat_name, "Group message sync")
 
 
 async def main():
-    print("Bot guruhlarni kuzatyapti...")
+    logger.info("Bot group synchronization polling started")
     await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+    )
     asyncio.run(main())

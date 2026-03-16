@@ -1,5 +1,7 @@
 ﻿import asyncio
+import logging
 import os
+from typing import Any
 
 from aiogram import Bot
 from aiogram.types import FSInputFile
@@ -10,166 +12,173 @@ from dotenv import load_dotenv
 from .models import Script
 
 load_dotenv()
-TOKEN = os.getenv("BOT_TOKEN")
+
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+logger = logging.getLogger(__name__)
 
 
-async def send_telegram_messages(messages):
-    bot = Bot(token=TOKEN)
+async def send_telegram_messages(messages: list[dict[str, Any]]) -> None:
+    if not BOT_TOKEN:
+        raise RuntimeError("BOT_TOKEN is not configured")
+
+    bot = Bot(token=BOT_TOKEN)
     try:
-        for item in messages:
-            chat_id = item["chat_id"]
-            text = item["text"]
-            image_path = item.get("image_path")
-
-            if image_path:
-                photo = FSInputFile(image_path)
+        for message in messages:
+            if message["image_path"]:
+                photo = FSInputFile(message["image_path"])
                 await bot.send_photo(
-                    chat_id=chat_id,
+                    chat_id=message["chat_id"],
                     photo=photo,
-                    caption=text or "",
+                    caption=message["text"] or "",
                 )
-                print(f"[PHOTO SENT OK] -> {item['group_name']}")
+                logger.info("Sent photo to group '%s'", message["group_name"])
             else:
                 await bot.send_message(
-                    chat_id=chat_id,
-                    text=text or "",
+                    chat_id=message["chat_id"],
+                    text=message["text"] or "",
                 )
-                print(f"[TEXT SENT OK] -> {item['group_name']}")
+                logger.info("Sent text to group '%s'", message["group_name"])
     finally:
         await bot.session.close()
 
 
-@shared_task
-def send_scheduled_scripts():
-    now = timezone.localtime()
-    print(f"[TASK START] now = {now}")
+def _was_sent_today(script: Script, now) -> bool:
+    if not script.last_sent_at:
+        return False
 
-    scripts = Script.objects.filter(is_active=True).prefetch_related(
-        "branches__groups",
-        "groups",
+    last_sent = timezone.localtime(script.last_sent_at)
+    return last_sent.date() == now.date()
+
+
+def _was_sent_this_month(script: Script, now) -> bool:
+    if not script.last_sent_at:
+        return False
+
+    last_sent = timezone.localtime(script.last_sent_at)
+    return last_sent.year == now.year and last_sent.month == now.month
+
+
+def _is_due_once(script: Script, now, send_time) -> bool:
+    return (
+        now.year == send_time.year
+        and now.month == send_time.month
+        and now.day == send_time.day
+        and now.hour == send_time.hour
+        and now.minute == send_time.minute
+        and not script.last_sent_at
     )
 
-    print(f"[TASK INFO] scripts count = {scripts.count()}")
 
-    for script in scripts:
-        send_time = timezone.localtime(script.send_time)
+def _is_due_monthly(script: Script, now, send_time) -> bool:
+    return (
+        now.day == send_time.day
+        and now.hour == send_time.hour
+        and now.minute == send_time.minute
+        and not _was_sent_this_month(script, now)
+    )
 
-        same_day = now.day == send_time.day
-        same_hour = now.hour == send_time.hour
-        same_minute = now.minute == send_time.minute
 
-        print(
-            f"[SCRIPT] id={script.id}, title={script.title}, "
-            f"repeat_type={script.repeat_type}, send_time={send_time}, "
-            f"last_sent_at={script.last_sent_at}"
-        )
-        print(
-            f"[CHECK] same_day={same_day}, same_hour={same_hour}, same_minute={same_minute}"
-        )
+def _is_due_daily(script: Script, now, send_time) -> bool:
+    return now.hour == send_time.hour and now.minute == send_time.minute and not _was_sent_today(script, now)
 
-        should_send = False
 
-        if script.repeat_type == "once":
-            same_year = now.year == send_time.year
-            same_month = now.month == send_time.month
+def _should_send_script(script: Script, now) -> bool:
+    send_time = timezone.localtime(script.send_time)
 
-            print(f"[ONCE CHECK] same_year={same_year}, same_month={same_month}")
+    if script.repeat_type == "once":
+        return _is_due_once(script, now, send_time)
+    if script.repeat_type == "monthly":
+        return _is_due_monthly(script, now, send_time)
+    if script.repeat_type == "daily":
+        return _is_due_daily(script, now, send_time)
 
-            if same_year and same_month and same_day and same_hour and same_minute:
-                if script.last_sent_at:
-                    print(f"[SKIP] Once script already sent: {script.title}")
-                    continue
-                should_send = True
+    logger.warning("Unsupported repeat_type '%s' for script '%s'", script.repeat_type, script.title)
+    return False
 
-        elif script.repeat_type == "monthly":
-            if same_day and same_hour and same_minute:
-                if script.last_sent_at:
-                    last_sent = timezone.localtime(script.last_sent_at)
-                    if last_sent.year == now.year and last_sent.month == now.month:
-                        print(f"[SKIP] Already sent this month: {script.title}")
-                        continue
-                should_send = True
 
-        elif script.repeat_type == "daily":
-            if same_hour and same_minute:
-                if script.last_sent_at:
-                    last_sent = timezone.localtime(script.last_sent_at)
-                    if last_sent.date() == now.date():
-                        print(f"[SKIP] Already sent today: {script.title}")
-                        continue
-                should_send = True
+def _resolve_group_text(script: Script, group) -> str | None:
+    has_uz_text = bool(script.text_uz and script.text_uz.strip())
+    has_ru_text = bool(script.text_ru and script.text_ru.strip())
 
-        if not should_send:
+    if not group.is_active:
+        logger.debug("Skipping inactive group '%s'", group.name)
+        return None
+
+    if not group.language:
+        logger.debug("Skipping group '%s' because language is not set", group.name)
+        return None
+
+    if group.language == "uz":
+        if has_uz_text:
+            return script.text_uz
+        logger.debug("Skipping group '%s' because Uzbek text is missing", group.name)
+        return None
+
+    if group.language == "ru":
+        if has_ru_text:
+            return script.text_ru
+        logger.debug("Skipping group '%s' because Russian text is missing", group.name)
+        return None
+
+    logger.debug("Skipping group '%s' because language '%s' is unsupported", group.name, group.language)
+    return None
+
+
+def _build_messages(script: Script) -> list[dict[str, Any]]:
+    image_path = script.image.path if script.image else None
+    messages: list[dict[str, Any]] = []
+
+    for group in script.get_target_groups():
+        text = _resolve_group_text(script, group)
+        if not text and not image_path:
+            logger.debug("Skipping group '%s' because script has no suitable content", group.name)
             continue
 
-        messages_to_send = []
+        if not text and image_path and group.language not in {"uz", "ru"}:
+            continue
 
-        has_uz_text = bool(script.text_uz and script.text_uz.strip())
-        has_ru_text = bool(script.text_ru and script.text_ru.strip())
-        image_path = script.image.path if script.image else None
-        target_groups = script.get_target_groups()
+        if text is None and image_path and group.language in {"uz", "ru"}:
+            text = ""
 
-        print(f"[TARGET GROUPS] count={target_groups.count()} for script={script.title}")
+        messages.append(
+            {
+                "chat_id": group.chat_id,
+                "text": text,
+                "group_name": group.name,
+                "image_path": image_path,
+            }
+        )
 
-        for group in target_groups:
-            if not group.is_active:
-                print(f"[SKIP GROUP] inactive -> {group.name}")
-                continue
+    return messages
 
-            if not group.language:
-                print(f"[SKIP GROUP] language not set -> {group.name}")
-                continue
 
-            text = None
+@shared_task
+def send_scheduled_scripts() -> None:
+    now = timezone.localtime()
+    scripts = list(
+        Script.objects.filter(is_active=True).prefetch_related(
+            "branches__groups",
+            "groups",
+        )
+    )
 
-            if group.language == "uz":
-                if has_uz_text:
-                    text = script.text_uz
-                elif has_ru_text:
-                    print(f"[SKIP GROUP] uz text missing -> {group.name}")
-                    continue
+    logger.info("Scheduled script task started at %s with %s active scripts", now, len(scripts))
 
-            elif group.language == "ru":
-                if has_ru_text:
-                    text = script.text_ru
-                elif has_uz_text:
-                    print(f"[SKIP GROUP] ru text missing -> {group.name}")
-                    continue
+    for script in scripts:
+        if not _should_send_script(script, now):
+            continue
 
-            else:
-                print(f"[SKIP GROUP] unsupported language -> {group.name}")
-                continue
-
-            if not text and not image_path:
-                print(f"[SKIP GROUP] no suitable text and no image -> {group.name}")
-                continue
-
-            print(
-                f"[SEND TRY] script={script.title}, "
-                f"group={group.name}, language={group.language}, "
-                f"chat_id={group.chat_id}, image={bool(image_path)}"
-            )
-
-            messages_to_send.append(
-                {
-                    "chat_id": group.chat_id,
-                    "text": text,
-                    "group_name": group.name,
-                    "image_path": image_path,
-                }
-            )
-
+        messages_to_send = _build_messages(script)
         if not messages_to_send:
-            print(f"[SKIP] No valid groups for script: {script.title}")
+            logger.info("Skipping script '%s' because it has no valid target groups", script.title)
             continue
 
         try:
             asyncio.run(send_telegram_messages(messages_to_send))
             script.last_sent_at = now
             script.save(update_fields=["last_sent_at"])
-            print(f"[DONE] last_sent_at updated for {script.title}")
-        except Exception as e:
-            print(f"[TASK ERROR] {script.title}: {e}")
+            logger.info("Updated last_sent_at for script '%s'", script.title)
+        except Exception:
+            logger.exception("Failed to send scheduled script '%s'", script.title)
 
-    print("[TASK END]")
-
+    logger.info("Scheduled script task finished")
