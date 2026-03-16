@@ -12,4 +12,10 @@ RUN apt-get update \
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN groupadd --gid 1000 appuser \
+    && useradd --uid 1000 --gid 1000 --create-home --shell /bin/bash appuser
+
 COPY . .
+RUN chown -R appuser:appuser /app
+
+USER appuser
