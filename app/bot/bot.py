@@ -36,6 +36,16 @@ def _default_group_name(name: str | None) -> str:
     return name or "No name"
 
 
+def _create_group(chat_id: int, name: str) -> tuple[Group, bool]:
+    group = Group.objects.create(
+        name=name,
+        chat_id=chat_id,
+        language="ru",
+        is_active=True,
+    )
+    return group, True
+
+
 def merge_group_records(old_chat_id: int, new_chat_id: int, name: str):
     old_group = Group.objects.filter(chat_id=old_chat_id).first()
     new_group = Group.objects.filter(chat_id=new_chat_id).first()
@@ -62,13 +72,7 @@ def merge_group_records(old_chat_id: int, new_chat_id: int, name: str):
         new_group.save(update_fields=["name", "is_active"])
         return new_group, False
 
-    group = Group.objects.create(
-        name=name,
-        chat_id=new_chat_id,
-        language="ru",
-        is_active=True,
-    )
-    return group, True
+    return _create_group(new_chat_id, name)
 
 
 def save_group_sync(chat_id: int, name: str):
@@ -80,26 +84,13 @@ def save_group_sync(chat_id: int, name: str):
         return existing, False
 
     if str(chat_id).startswith("-100"):
-        old_group_same_name = (
-            Group.objects.filter(name=name)
-            .exclude(chat_id=chat_id)
-            .exclude(chat_id__startswith="-100")
-            .first()
+        logger.warning(
+            "New supergroup '%s' (%s) was saved without heuristic name-based merge",
+            name,
+            chat_id,
         )
 
-        if old_group_same_name:
-            old_group_same_name.chat_id = chat_id
-            old_group_same_name.is_active = True
-            old_group_same_name.save(update_fields=["chat_id", "is_active"])
-            return old_group_same_name, False
-
-    group = Group.objects.create(
-        name=name,
-        chat_id=chat_id,
-        language="ru",
-        is_active=True,
-    )
-    return group, True
+    return _create_group(chat_id, name)
 
 
 def _log_group_sync_result(action: str, group: Group, created: bool) -> None:
@@ -181,4 +172,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
