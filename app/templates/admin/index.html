@@ -1,0 +1,199 @@
+﻿{% extends "admin/base_site.html" %}
+{% load i18n static log %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">
+<style>
+    .ts-dashboard-grid {
+        display: grid;
+        gap: 24px;
+    }
+
+    .ts-dashboard-card {
+        border-radius: var(--ts-radius-card, 18px);
+        overflow: hidden;
+        border: 1px solid rgba(255, 99, 71, 0.12);
+    }
+
+    html[data-theme="light"] .ts-dashboard-card {
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 18px 45px rgba(144, 73, 58, 0.08);
+    }
+
+    html[data-theme="dark"] .ts-dashboard-card {
+        background: rgba(27, 27, 27, 0.9);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.26);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html[data-theme="auto"] .ts-dashboard-card {
+            background: rgba(27, 27, 27, 0.9);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.26);
+        }
+    }
+
+    .ts-dashboard-card__header {
+        background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%);
+    }
+
+    .ts-dashboard-card__header a {
+        display: block;
+        padding: 14px 16px;
+        color: #fff7f5;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.875rem;
+        text-decoration: none;
+    }
+
+    .ts-dashboard-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 16px;
+        border-top: 1px solid rgba(255, 99, 71, 0.12);
+    }
+
+    html[data-theme="light"] .ts-dashboard-row:nth-child(even) {
+        background: rgba(255, 248, 244, 0.72);
+    }
+
+    html[data-theme="dark"] .ts-dashboard-row:nth-child(even) {
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html[data-theme="auto"] .ts-dashboard-row:nth-child(even) {
+            background: rgba(255, 255, 255, 0.03);
+        }
+    }
+
+    .ts-dashboard-name a,
+    .ts-dashboard-name {
+        color: inherit;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .ts-dashboard-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 18px;
+        white-space: nowrap;
+    }
+
+    .ts-dashboard-actions a {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        color: inherit;
+        background-image: none !important;
+        padding-left: 0 !important;
+    }
+
+    .ts-dashboard-actions a.addlink::before {
+        content: "+";
+        color: #7dbb3b;
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 700;
+    }
+
+    .ts-dashboard-actions a.changelink::before,
+    .ts-dashboard-actions a.viewlink::before {
+        content: "✎";
+        color: #f4c20d;
+        font-size: 14px;
+        line-height: 1;
+    }
+
+    .ts-dashboard-actions a.viewlink::before {
+        content: "o";
+        color: #ff6347;
+    }
+</style>
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+{% block nav-breadcrumbs %}{% endblock %}
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div id="content-main" class="ts-dashboard-grid">
+  {% if app_list %}
+    {% for app in app_list %}
+      <div class="ts-dashboard-card app-{{ app.app_label }}{% if app.app_url in request.path|urlencode %} current-app{% endif %}">
+        <div class="ts-dashboard-card__header">
+          <a href="{{ app.app_url }}" title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">{{ app.name }}</a>
+        </div>
+        <div class="ts-dashboard-card__body">
+          {% for model in app.models %}
+            <div class="ts-dashboard-row model-{{ model.object_name|lower }}{% if model.admin_url in request.path|urlencode %} current-model{% endif %}">
+              <div class="ts-dashboard-name">
+                {% if model.admin_url %}
+                  <a href="{{ model.admin_url }}"{% if model.admin_url in request.path|urlencode %} aria-current="page"{% endif %}>{{ model.name }}</a>
+                {% else %}
+                  {{ model.name }}
+                {% endif %}
+              </div>
+              <div class="ts-dashboard-actions">
+                {% if model.add_url %}
+                  <a href="{{ model.add_url }}" class="addlink">{% translate 'Add' %}</a>
+                {% endif %}
+                {% if model.admin_url %}
+                  {% if model.view_only %}
+                    <a href="{{ model.admin_url }}" class="viewlink">{% translate 'View' %}</a>
+                  {% else %}
+                    <a href="{{ model.admin_url }}" class="changelink">{% translate 'Change' %}</a>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>{% translate "You don't have permission to view or edit anything." %}</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% translate 'Recent actions' %}</h2>
+        <h3>{% translate 'My actions' %}</h3>
+            {% get_admin_log 10 as admin_log for_user user %}
+            {% if not admin_log %}
+            <p>{% translate 'None available' %}</p>
+            {% else %}
+            <ul class="actionlist">
+            {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                <span class="visually-hidden">{% if entry.is_addition %}{% translate 'Added:' %}{% elif entry.is_change %}{% translate 'Changed:' %}{% elif entry.is_deletion %}{% translate 'Deleted:' %}{% endif %}</span>
+                {% if entry.is_deletion or not entry.get_admin_url %}
+                    {{ entry.object_repr }}
+                {% else %}
+                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br>
+                {% if entry.content_type %}
+                    <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                {% else %}
+                    <span class="mini quiet">{% translate 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
