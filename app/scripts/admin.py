@@ -12,6 +12,13 @@ admin.site.site_header = ADMIN_SITE_TITLE
 admin.site.site_title = ADMIN_SITE_TITLE
 admin.site.index_title = ADMIN_SITE_TITLE
 
+HIDDEN_ADMIN_APP_LABELS = {"auth"}
+
+
+def _filtered_app_list(admin_site, request, app_label=None):
+    app_list = original_get_app_list(request, app_label)
+    return [app for app in app_list if app["app_label"] not in HIDDEN_ADMIN_APP_LABELS]
+
 
 class MappedValueFilter(admin.SimpleListFilter):
     value_map = {}
@@ -178,3 +185,8 @@ class ScriptAdmin(admin.ModelAdmin):
             )
             .prefetch_related(SCRIPT_BRANCH_PREFETCH, "groups")
         )
+
+original_get_app_list = admin.site.get_app_list
+admin.site.get_app_list = lambda request, app_label=None: _filtered_app_list(admin.site, request, app_label)
+
+
