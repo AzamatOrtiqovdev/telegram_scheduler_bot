@@ -1,0 +1,12 @@
+﻿venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+.gitignore
+media/
+staticfiles/
+sqlite_to_postgres_dump.json
+*.sqlite3
+app/db.sqlite3

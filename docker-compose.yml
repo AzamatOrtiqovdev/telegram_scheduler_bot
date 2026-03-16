@@ -1,7 +1,4 @@
-version: "3.9"
-
-services:
-
+﻿services:
   postgres:
     image: postgres:16
     container_name: bot_postgres
@@ -14,6 +11,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d telegram_bot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   redis:
     image: redis:7
@@ -21,6 +23,97 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bot_web
+    restart: always
+    env_file:
+      - .env
+    environment:
+      USE_POSTGRES: "True"
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+    command: sh -c "python app/manage.py migrate && python app/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bot_worker
+    restart: always
+    env_file:
+      - .env
+    environment:
+      USE_POSTGRES: "True"
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+    command: sh -c "cd app && celery -A config worker -l info"
+    volumes:
+      - .:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bot_beat
+    restart: always
+    env_file:
+      - .env
+    environment:
+      USE_POSTGRES: "True"
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+    command: sh -c "cd app && celery -A config beat -l info"
+    volumes:
+      - .:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bot_app
+    restart: always
+    env_file:
+      - .env
+    environment:
+      USE_POSTGRES: "True"
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+    command: python app/bot/bot.py
+    volumes:
+      - .:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
 volumes:
   postgres_data:
