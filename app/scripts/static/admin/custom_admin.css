@@ -1,4 +1,4 @@
-﻿:root {
+:root {
         --primary: #ff6347;
         --secondary: #e5533a;
         --accent: #ff8a75;
@@ -28,95 +28,6 @@
         --default-button-hover-bg: #e5533a;
         --link-fg: #ff6347;
         --link-hover-color: #ff8a75;
-    }
-
-    html[data-theme="dark"] #nav-sidebar {
-        border-right: 1px solid rgba(255, 99, 71, 0.16);
-        box-shadow: inset -1px 0 0 rgba(255, 99, 71, 0.08);
-    }
-
-    html[data-theme="dark"] #nav-filter {
-        border-radius: 12px;
-        margin: 12px;
-        width: calc(100% - 24px);
-    }
-
-    html[data-theme="dark"] #nav-sidebar .module,
-    html[data-theme="dark"] #nav-sidebar .app-auth,
-    html[data-theme="dark"] #nav-sidebar .app-scripts {
-        border-radius: 12px;
-        margin: 12px;
-        overflow: hidden;
-    }
-
-    html[data-theme="dark"] #nav-sidebar .caption,
-    html[data-theme="dark"] #nav-sidebar .section,
-    html[data-theme="dark"] .module h2,
-    html[data-theme="dark"] .module caption,
-    html[data-theme="dark"] .inline-group h2,
-    html[data-theme="dark"] #changelist-filter h2 {
-        border-radius: 12px 12px 0 0;
-    }
-
-    html[data-theme="dark"] #nav-sidebar table,
-    html[data-theme="dark"] #nav-sidebar tbody,
-    html[data-theme="dark"] #nav-sidebar tr,
-    html[data-theme="dark"] #nav-sidebar th,
-    html[data-theme="dark"] #nav-sidebar td {
-        border-radius: 02!important;
-    }
-
-    html[data-theme="dark"] #nav-sidebar tbody th,
-    html[data-theme="dark"] #nav-sidebar tbody td {
-        vertical-align: middle;
-        padding: 0;
-    }
-
-    html[data-theme="dark"] #nav-sidebar tbody th {
-        width: 100%;
-    }
-
-    html[data-theme="dark"] #nav-sidebar tbody td {
-        width: 72px;
-        text-align: center;
-        white-space: nowrap;
-    }
-
-    html[data-theme="dark"] #nav-sidebar a {
-        display: block;
-        padding: 12px 12px;
-    }
-
-    html[data-theme="dark"] #nav-sidebar td a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        padding: 12px 8px;
-    }
-
-    html[data-theme="dark"] #nav-sidebar td a.addlink {
-        background-image: none !important;
-        padding-left: 8px !important;
-    }
-
-    html[data-theme="dark"] #nav-sidebar td a.addlink::before {
-        content: "+";
-        display: inline-block;
-        font-size: 22px;
-        line-height: 1;
-        font-weight: 700;
-        color: #7dbb3b;
-        margin-right: 2px;
-    }
-
-    html[data-theme="dark"] .button,
-    html[data-theme="dark"] input[type=submit],
-    html[data-theme="dark"] input[type=button],
-    html[data-theme="dark"] .submit-row input,
-    html[data-theme="dark"] a.button,
-    html[data-theme="dark"] .object-tools a {
-        border-radius: 929px;
     }
 
     html[data-theme="dark"] body {
@@ -1573,6 +1484,91 @@
         border-radius: var(--ts-radius-panel) !important;
     }
 
+    body.change-list #content-main,
+    html[data-theme="light"] body.change-list #content-main,
+    html[data-theme="dark"] body.change-list #content-main {
+        overflow: visible !important;
+    }
+
+    body.change-list .object-tools {
+        overflow: visible !important;
+        margin: 0 0 16px !important;
+    }
+
+    body.change-list .object-tools {
+        float: right !important;
+        position: relative !important;
+        z-index: 20 !important;
+        padding-left: 0 !important;
+        margin-top: -48px !important;
+        margin-bottom: 0 !important;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+    }
+
+    body.change-list .object-tools li {
+        display: block !important;
+        float: left !important;
+        margin-left: 5px !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    body.change-list .object-tools a,
+    html[data-theme="light"] body.change-list .object-tools a,
+    html[data-theme="dark"] body.change-list .object-tools a {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 8px 14px !important;
+        background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%) !important;
+        color: #ffffff !important;
+        border: 0 !important;
+        box-shadow: 0 10px 24px rgba(229, 83, 58, 0.2) !important;
+        opacity: 1 !important;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.08) !important;
+        float: left !important;
+    }
+
+    body.change-list .object-tools a.addlink {
+        background-image: none !important;
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+    }
+
+    body.change-list .object-tools a.addlink::before {
+        content: none !important;
+        display: none !important;
+    }
+
+    body.change-list .object-tools a.addlink::after {
+        content: "+" !important;
+        display: inline-block !important;
+        font-size: 18px !important;
+        line-height: 1 !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+    }
+
+    body.change-list #changelist {
+        clear: both !important;
+    }
+
+    body.change-list #changelist-filter {
+        clear: right !important;
+        overflow: hidden !important;
+        border-top-left-radius: 12px !important;
+        border-top-right-radius: 12px !important;
+    }
+
+    body.change-list #changelist-filter h2 {
+        margin: 0 !important;
+        border-top-left-radius: 12px !important;
+        border-top-right-radius: 12px !important;
+    }
+
     #toolbar {
         border-radius: var(--ts-radius-toolbar) !important;
     }
@@ -1640,6 +1636,10 @@
     @media (prefers-color-scheme: dark) {
         html[data-theme="auto"] .dashboard #content-main .module caption {
             background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%) !important;
+        }
+
+        html[data-theme="auto"] body.change-list #content-main {
+            overflow: visible !important;
         }
     }
 
