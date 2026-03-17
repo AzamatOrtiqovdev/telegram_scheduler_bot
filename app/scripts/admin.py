@@ -1,4 +1,4 @@
-﻿from django.contrib import admin
+from django.contrib import admin
 from django.db.models import Count, Prefetch, Q
 
 from .models import Branch, Group, Script
@@ -15,7 +15,7 @@ admin.site.index_title = ADMIN_SITE_TITLE
 HIDDEN_ADMIN_APP_LABELS = {"auth"}
 
 
-def _filtered_app_list(admin_site, request, app_label=None):
+def _filtered_app_list(request, app_label=None):
     app_list = original_get_app_list(request, app_label)
     return [app for app in app_list if app["app_label"] not in HIDDEN_ADMIN_APP_LABELS]
 
@@ -187,6 +187,6 @@ class ScriptAdmin(admin.ModelAdmin):
         )
 
 original_get_app_list = admin.site.get_app_list
-admin.site.get_app_list = lambda request, app_label=None: _filtered_app_list(admin.site, request, app_label)
+admin.site.get_app_list = _filtered_app_list
 
 

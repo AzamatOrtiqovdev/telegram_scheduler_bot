@@ -1,0 +1,17 @@
+/* Theme Foundation */
+
+:root {
+    --primary: #ff6347;
+    --secondary: #e5533a;
+    --accent: #ff8a75;
+    --header-bg: #ff6347;
+    --header-link-color: #fff7f5;
+    --breadcrumbs-bg: #e5533a;
+    --breadcrumbs-link-fg: #fff1ed;
+    --button-bg: #ff6347;
+    --button-hover-bg: #e5533a;
+    --default-button-bg: #ff6347;
+    --default-button-hover-bg: #e5533a;
+    --link-fg: #ff6347;
+    --link-hover-color: #ff8a75;
+}

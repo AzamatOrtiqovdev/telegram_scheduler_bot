@@ -1,0 +1,507 @@
+/* Dark And Auto Overrides */
+
+/* Final dark mode polish overrides */
+    html[data-theme="dark"] body {
+        background: radial-gradient(circle at top left, rgba(255, 99, 71, 0.08), transparent 24%), linear-gradient(180deg, #141414 0%, #0d0d0d 100%) !important;
+        color: #f5e8e4 !important;
+    }
+
+    html[data-theme="dark"] #container,
+    html[data-theme="dark"] #main,
+    html[data-theme="dark"] #content {
+        background: transparent !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar {
+        background: rgba(20, 20, 20, 0.88) !important;
+        border-right: 1px solid rgba(255, 99, 71, 0.16) !important;
+        box-shadow: inset -1px 0 0 rgba(255, 99, 71, 0.08) !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar .module,
+    html[data-theme="dark"] #nav-sidebar .app-auth,
+    html[data-theme="dark"] #nav-sidebar .app-scripts {
+        background: rgba(24, 24, 24, 0.96) !important;
+        border: 1px solid rgba(255, 99, 71, 0.12) !important;
+        border-radius: 12px !important;
+        margin: 12px !important;
+        overflow: hidden !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28) !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar .module caption,
+    html[data-theme="dark"] #nav-sidebar .module h2,
+    html[data-theme="dark"] #nav-sidebar .caption,
+    html[data-theme="dark"] #nav-sidebar .section,
+    html[data-theme="dark"] #changelist-filter h2 {
+        background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%) !important;
+        color: #fff7f5 !important;
+        border-radius: 12px 12px 0 0 !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar table,
+    html[data-theme="dark"] #nav-sidebar tbody,
+    html[data-theme="dark"] #nav-sidebar tr,
+    html[data-theme="dark"] #nav-sidebar th,
+    html[data-theme="dark"] #nav-sidebar td {
+        background: transparent !important;
+        border-radius: 02!important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar tbody th,
+    html[data-theme="dark"] #nav-sidebar tbody td {
+        border-top: 1px solid rgba(255, 99, 71, 0.08) !important;
+        padding: 0 !important;
+        vertical-align: middle !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar tbody td {
+        width: 72px !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar a {
+        color: #f4d9d2 !important;
+        display: block !important;
+        padding: 8px 14px !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar td a {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        padding: 12px 8px !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar td a.addlink {
+        background-image: none !important;
+        padding-left: 8px !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar td a.addlink::before {
+        content: "+";
+        display: inline-block;
+        font-size: 22px;
+        line-height: 1;
+        font-weight: 700;
+        color: #7dbb3b;
+        margin-right: 2px;
+    }
+
+    html[data-theme="dark"] #nav-sidebar a.current-model,
+    html[data-theme="dark"] #nav-sidebar .current-model a {
+        background: linear-gradient(135deg, rgba(255, 99, 71, 0.22) 0%, rgba(255, 127, 102, 0.12) 100%) !important;
+        color: #fff4f1 !important;
+        font-weight: 700 !important;
+    }
+
+    html[data-theme="dark"] #toggle-nav-sidebar,
+    html[data-theme="dark"] #toggle-nav-sidebar:hover,
+    html[data-theme="dark"] #toggle-nav-sidebar:focus {
+        color: #ff6347 !important;
+    }
+
+    html[data-theme="dark"] #content-main,
+    html[data-theme="dark"] #changelist-form,
+    html[data-theme="dark"] #changelist-filter,
+    html[data-theme="dark"] #toolbar,
+    html[data-theme="dark"] .dashboard .module,
+    html[data-theme="dark"] .change-form #content-main,
+    html[data-theme="dark"] #content-related {
+        background: rgba(27, 27, 27, 0.9) !important;
+        border: 1px solid rgba(255, 99, 71, 0.12) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.26) !important;
+        backdrop-filter: blur(10px) !important;
+    }
+
+    html[data-theme="dark"] #toolbar {
+        border-radius: 12px !important;
+    }
+
+    html[data-theme="dark"] .results table thead th {
+        background: rgba(255, 99, 71, 0.08) !important;
+        color: #ffe3dd !important;
+    }
+
+    html[data-theme="dark"] .results tbody tr:nth-child(even) {
+        background: rgba(255, 255, 255, 0.02) !important;
+    }
+
+    html[data-theme="dark"] .results tbody tr:hover {
+        background: rgba(255, 99, 71, 0.08) !important;
+    }
+
+    html[data-theme="dark"] #toolbar input[type="text"],
+    html[data-theme="dark"] #changelist-search input[type="text"],
+    html[data-theme="dark"] #changelist .actions select,
+    html[data-theme="dark"] select,
+    html[data-theme="dark"] textarea,
+    html[data-theme="dark"] input[type="text"],
+    html[data-theme="dark"] input[type="password"],
+    html[data-theme="dark"] input[type="email"],
+    html[data-theme="dark"] input[type="number"] {
+        background: #111111 !important;
+        border: 1px solid rgba(255, 99, 71, 0.18) !important;
+        color: #fff1ed !important;
+        border-radius: 12px !important;
+    }
+
+    html[data-theme="dark"] .button,
+    html[data-theme="dark"] input[type=submit],
+    html[data-theme="dark"] input[type=button],
+    html[data-theme="dark"] .submit-row input,
+    html[data-theme="dark"] a.button,
+    html[data-theme="dark"] .object-tools a,
+    html[data-theme="dark"] #changelist .actions .button,
+    html[data-theme="dark"] #changelist .actions input[type=submit] {
+        background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%) !important;
+        border-color: transparent !important;
+        color: #ffffff !important;
+        border-radius: 929px !important;
+        box-shadow: 0 10px 24px rgba(120, 29, 15, 0.28) !important;
+    }
+
+    html[data-theme="dark"] .theme-toggle,
+    html[data-theme="dark"] .theme-toggle:link,
+    html[data-theme="dark"] .theme-toggle:visited,
+    html[data-theme="dark"] button.theme-toggle,
+    html[data-theme="dark"] #header .theme-toggle,
+    html[data-theme="dark"] #header .theme-toggle *,
+    html[data-theme="dark"] #header .theme-toggle svg,
+    html[data-theme="dark"] #header .theme-toggle path,
+    html[data-theme="dark"] #header .theme-toggle::before,
+    html[data-theme="dark"] #header .theme-toggle::after {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html[data-theme="auto"] body {
+            background: radial-gradient(circle at top left, rgba(255, 99, 71, 0.08), transparent 24%), linear-gradient(180deg, #141414 0%, #0d0d0d 100%) !important;
+            color: #f5e8e4 !important;
+        }
+
+        html[data-theme="auto"] #container,
+        html[data-theme="auto"] #main,
+        html[data-theme="auto"] #content {
+            background: transparent !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar {
+            background: rgba(20, 20, 20, 0.88) !important;
+            border-right: 1px solid rgba(255, 99, 71, 0.16) !important;
+            box-shadow: inset -1px 0 0 rgba(255, 99, 71, 0.08) !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar .module,
+        html[data-theme="auto"] #nav-sidebar .app-auth,
+        html[data-theme="auto"] #nav-sidebar .app-scripts {
+            background: rgba(24, 24, 24, 0.96) !important;
+            border: 1px solid rgba(255, 99, 71, 0.12) !important;
+            border-radius: 12px !important;
+            margin: 12px !important;
+            overflow: hidden !important;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28) !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar .module caption,
+        html[data-theme="auto"] #nav-sidebar .module h2,
+        html[data-theme="auto"] #nav-sidebar .caption,
+        html[data-theme="auto"] #nav-sidebar .section,
+        html[data-theme="auto"] #changelist-filter h2 {
+            background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%) !important;
+            color: #fff7f5 !important;
+            border-radius: 12px 12px 0 0 !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar table,
+        html[data-theme="auto"] #nav-sidebar tbody,
+        html[data-theme="auto"] #nav-sidebar tr,
+        html[data-theme="auto"] #nav-sidebar th,
+        html[data-theme="auto"] #nav-sidebar td {
+            background: transparent !important;
+            border-radius: 02!important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar tbody th,
+        html[data-theme="auto"] #nav-sidebar tbody td {
+            border-top: 1px solid rgba(255, 99, 71, 0.08) !important;
+            padding: 0 !important;
+            vertical-align: middle !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar tbody td {
+            width: 72px !important;
+            text-align: center !important;
+            white-space: nowrap !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar a {
+            color: #f4d9d2 !important;
+            display: block !important;
+            padding: 8px 14px !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar td a {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            padding: 12px 8px !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar td a.addlink {
+            background-image: none !important;
+            padding-left: 8px !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar td a.addlink::before {
+            content: "+";
+            display: inline-block;
+            font-size: 22px;
+            line-height: 1;
+            font-weight: 700;
+            color: #7dbb3b;
+            margin-right: 2px;
+        }
+
+        html[data-theme="auto"] #nav-sidebar a.current-model,
+        html[data-theme="auto"] #nav-sidebar .current-model a {
+            background: linear-gradient(135deg, rgba(255, 99, 71, 0.22) 0%, rgba(255, 127, 102, 0.12) 100%) !important;
+            color: #fff4f1 !important;
+            font-weight: 700 !important;
+        }
+
+        html[data-theme="auto"] #toggle-nav-sidebar,
+        html[data-theme="auto"] #toggle-nav-sidebar:hover,
+        html[data-theme="auto"] #toggle-nav-sidebar:focus {
+            color: #ff6347 !important;
+        }
+
+        html[data-theme="auto"] #content-main,
+        html[data-theme="auto"] #changelist-form,
+        html[data-theme="auto"] #changelist-filter,
+        html[data-theme="auto"] #toolbar,
+        html[data-theme="auto"] .dashboard .module,
+        html[data-theme="auto"] .change-form #content-main,
+        html[data-theme="auto"] #content-related {
+            background: rgba(27, 27, 27, 0.9) !important;
+            border: 1px solid rgba(255, 99, 71, 0.12) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.26) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        html[data-theme="auto"] #toolbar {
+            border-radius: 12px !important;
+        }
+
+        html[data-theme="auto"] .results table thead th {
+            background: rgba(255, 99, 71, 0.08) !important;
+            color: #ffe3dd !important;
+        }
+
+        html[data-theme="auto"] .results tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02) !important;
+        }
+
+        html[data-theme="auto"] .results tbody tr:hover {
+            background: rgba(255, 99, 71, 0.08) !important;
+        }
+
+        html[data-theme="auto"] #toolbar input[type="text"],
+        html[data-theme="auto"] #changelist-search input[type="text"],
+        html[data-theme="auto"] #changelist .actions select,
+        html[data-theme="auto"] select,
+        html[data-theme="auto"] textarea,
+        html[data-theme="auto"] input[type="text"],
+        html[data-theme="auto"] input[type="password"],
+        html[data-theme="auto"] input[type="email"],
+        html[data-theme="auto"] input[type="number"] {
+            background: #111111 !important;
+            border: 1px solid rgba(255, 99, 71, 0.18) !important;
+            color: #fff1ed !important;
+            border-radius: 12px !important;
+        }
+
+        html[data-theme="auto"] .button,
+        html[data-theme="auto"] input[type=submit],
+        html[data-theme="auto"] input[type=button],
+        html[data-theme="auto"] .submit-row input,
+        html[data-theme="auto"] a.button,
+        html[data-theme="auto"] .object-tools a,
+        html[data-theme="auto"] #changelist .actions .button,
+        html[data-theme="auto"] #changelist .actions input[type=submit] {
+            background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%) !important;
+            border-color: transparent !important;
+            color: #ffffff !important;
+            border-radius: 929px !important;
+            box-shadow: 0 10px 24px rgba(120, 29, 15, 0.28) !important;
+        }
+
+        html[data-theme="auto"] .theme-toggle,
+        html[data-theme="auto"] .theme-toggle:link,
+        html[data-theme="auto"] .theme-toggle:visited,
+        html[data-theme="auto"] button.theme-toggle,
+        html[data-theme="auto"] #header .theme-toggle,
+        html[data-theme="auto"] #header .theme-toggle *,
+        html[data-theme="auto"] #header .theme-toggle svg,
+        html[data-theme="auto"] #header .theme-toggle path,
+        html[data-theme="auto"] #header .theme-toggle::before,
+        html[data-theme="auto"] #header .theme-toggle::after {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+        }
+    }
+
+    /* Restore default dark filter internals */
+    html[data-theme="dark"] #changelist-filter h3,
+    html[data-theme="dark"] #changelist-filter details summary {
+        padding: 0 15px !important;
+        margin-bottom: 10px !important;
+        font-weight: 400 !important;
+    }
+
+    html[data-theme="dark"] #changelist-filter ul {
+        margin: 5px 0 !important;
+        padding: 0 15px 15px !important;
+        border-bottom: 1px solid var(--hairline-color) !important;
+    }
+
+    html[data-theme="dark"] #changelist-filter li,
+    html[data-theme="dark"] #changelist-filter li.selected {
+        background: transparent !important;
+        border-radius: 02!important;
+        padding: 5px 0 !important;
+        margin: 0 !important;
+    }
+
+    html[data-theme="dark"] #changelist-filter details > summary::before {
+        content: "\2192" !important;
+        color: var(--link-hover-color) !important;
+        font-weight: bold !important;
+    }
+
+    html[data-theme="dark"] #changelist-filter details[open] > summary::before {
+        content: "\2193" !important;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html[data-theme="auto"] #changelist-filter h3,
+        html[data-theme="auto"] #changelist-filter details summary {
+            padding: 0 15px !important;
+            margin-bottom: 10px !important;
+            font-weight: 400 !important;
+        }
+
+        html[data-theme="auto"] #changelist-filter ul {
+            margin: 5px 0 !important;
+            padding: 0 15px 15px !important;
+            border-bottom: 1px solid var(--hairline-color) !important;
+        }
+
+        html[data-theme="auto"] #changelist-filter li,
+        html[data-theme="auto"] #changelist-filter li.selected {
+            background: transparent !important;
+            border-radius: 02!important;
+            padding: 5px 0 !important;
+            margin: 0 !important;
+        }
+
+        html[data-theme="auto"] #changelist-filter details > summary::before {
+            content: "\2192" !important;
+            color: var(--link-hover-color) !important;
+            font-weight: bold !important;
+        }
+
+        html[data-theme="auto"] #changelist-filter details[open] > summary::before {
+            content: "\2193" !important;
+        }
+    }
+
+    html[data-theme="dark"] #changelist-filter .viewlink::before,
+    html[data-theme="dark"] #changelist-filter .hidelink::before {
+        display: inline-block !important;
+        margin-right: 6px !important;
+        font-weight: 700 !important;
+    }
+
+    html[data-theme="dark"] #changelist-filter .viewlink::before {
+        content: "\1F441" !important;
+        color: #ff6347 !important;
+        font-size: 14px !important;
+        line-height: 1 !important;
+    }
+
+    html[data-theme="dark"] #changelist-filter .hidelink::before {
+        content: "\00D7" !important;
+        color: #ff6347 !important;
+        font-size: 15px !important;
+        line-height: 1 !important;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html[data-theme="auto"] #changelist-filter .viewlink::before,
+        html[data-theme="auto"] #changelist-filter .hidelink::before {
+            display: inline-block !important;
+            margin-right: 6px !important;
+            font-weight: 700 !important;
+        }
+
+        html[data-theme="auto"] #changelist-filter .viewlink::before {
+            content: "\1F441" !important;
+            color: #ff6347 !important;
+            font-size: 14px !important;
+            line-height: 1 !important;
+        }
+
+        html[data-theme="auto"] #changelist-filter .hidelink::before {
+            content: "\00D7" !important;
+            color: #ff6347 !important;
+            font-size: 15px !important;
+            line-height: 1 !important;
+        }
+    }
+
+    html[data-theme="light"] #changelist-filter .viewlink,
+    html[data-theme="light"] #changelist-filter .hidelink,
+    html[data-theme="dark"] #changelist-filter .viewlink,
+    html[data-theme="dark"] #changelist-filter .hidelink {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding-left: 0 !important;
+        background-image: none !important;
+    }
+
+    html[data-theme="light"] #changelist-filter .viewlink::before,
+    html[data-theme="light"] #changelist-filter .hidelink::before,
+    html[data-theme="dark"] #changelist-filter .viewlink::before,
+    html[data-theme="dark"] #changelist-filter .hidelink::before {
+        margin-right: 0 !important;
+        flex: 0 0 auto !important;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html[data-theme="auto"] #changelist-filter .viewlink,
+        html[data-theme="auto"] #changelist-filter .hidelink {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding-left: 0 !important;
+            background-image: none !important;
+        }
+
+        html[data-theme="auto"] #changelist-filter .viewlink::before,
+        html[data-theme="auto"] #changelist-filter .hidelink::before {
+            margin-right: 0 !important;
+            flex: 0 0 auto !important;
+        }
+    }

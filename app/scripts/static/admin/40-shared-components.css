@@ -1,0 +1,588 @@
+/* Shared Components */
+
+:root {
+    --ts-radius-card: 18px;
+    --ts-radius-card-top: 18px;
+    --ts-radius-panel: 12px;
+    --ts-radius-input: 10px;
+    --ts-radius-toolbar: 16px;
+    --ts-radius-pill: 999px;
+    --ts-radius-card-dark: 22px;
+    --ts-radius-toolbar-dark: 18px;
+    --ts-radius-panel-dark: 14px;
+}
+
+#nav-sidebar tbody td {
+    width: 84px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+}
+
+#nav-sidebar td a,
+#nav-sidebar td a.addlink {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    padding: 12px 8px !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    background-image: none !important;
+}
+
+#nav-sidebar td a.addlink {
+    font-size: 0 !important;
+    letter-spacing: 0 !important;
+    min-width: 54px !important;
+}
+
+#nav-sidebar td a.addlink::before {
+    content: "+" !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    color: #7dbb3b !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+}
+
+#nav-sidebar td a.addlink::after {
+    content: "Add" !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+    color: inherit !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+}
+
+#nav-sidebar .module,
+#nav-sidebar .app-auth,
+#nav-sidebar .app-scripts,
+.dashboard #content-main .module,
+#content-main,
+#changelist-form,
+#changelist-filter,
+#content-related,
+.inline-group,
+.form-row,
+.results,
+.submit-row,
+.paginator,
+.object-tools {
+    border-radius: var(--ts-radius-card) !important;
+    overflow: hidden !important;
+}
+
+#nav-sidebar .module caption,
+#nav-sidebar .module h2,
+#nav-sidebar .caption,
+#nav-sidebar .section {
+    border-radius: var(--ts-radius-card-top) var(--ts-radius-card-top) 0 0 !important;
+}
+
+#nav-sidebar table {
+    border-radius: inherit !important;
+    overflow: hidden !important;
+}
+
+#nav-sidebar tbody tr:last-child th,
+#nav-sidebar tbody tr:last-child td {
+    border-bottom-left-radius: var(--ts-radius-card) !important;
+    border-bottom-right-radius: var(--ts-radius-card) !important;
+}
+
+#nav-filter {
+    border-radius: var(--ts-radius-panel) !important;
+}
+
+body.change-list #content-main,
+html[data-theme="light"] body.change-list #content-main,
+html[data-theme="dark"] body.change-list #content-main {
+    overflow: visible !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] body.change-list #content-main {
+        overflow: visible !important;
+    }
+}
+
+body.change-list .object-tools {
+    float: right !important;
+    position: relative !important;
+    z-index: 20 !important;
+    padding-left: 0 !important;
+    margin: -48px 0 16px !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+
+body.change-list .object-tools li {
+    display: block !important;
+    float: left !important;
+    margin-left: 5px !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+body.change-list .object-tools a,
+html[data-theme="light"] body.change-list .object-tools a,
+html[data-theme="dark"] body.change-list .object-tools a {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 8px 14px !important;
+    background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%) !important;
+    color: #ffffff !important;
+    border: 0 !important;
+    box-shadow: 0 10px 24px rgba(229, 83, 58, 0.2) !important;
+    opacity: 1 !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.08) !important;
+    float: left !important;
+}
+
+body.change-list .object-tools a.addlink {
+    background-image: none !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+body.change-list .object-tools a.addlink::before {
+    content: none !important;
+    display: none !important;
+}
+
+body.change-list .object-tools a.addlink::after {
+    content: "+" !important;
+    display: inline-block !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+}
+
+body.change-list #changelist {
+    clear: both !important;
+}
+
+body.change-list #changelist-filter {
+    clear: right !important;
+    overflow: hidden !important;
+    border-top-left-radius: var(--ts-radius-panel) !important;
+    border-top-right-radius: var(--ts-radius-panel) !important;
+}
+
+body.change-list #changelist-filter h2 {
+    margin: 0 !important;
+    border-top-left-radius: var(--ts-radius-panel) !important;
+    border-top-right-radius: var(--ts-radius-panel) !important;
+}
+
+#toolbar {
+    border-radius: var(--ts-radius-toolbar) !important;
+}
+
+#toolbar input[type="text"],
+#changelist-search input[type="text"],
+#changelist .actions select,
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"] {
+    border-radius: var(--ts-radius-input) !important;
+}
+
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button,
+.object-tools a,
+#changelist .actions .button,
+#changelist .actions input[type=submit] {
+    border-radius: var(--ts-radius-pill) !important;
+}
+
+#toolbar input[type="submit"],
+#changelist .actions .button,
+#changelist .actions input[type=submit] {
+    border-radius: 12px !important;
+}
+
+.dashboard #content-main .module {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.dashboard #content-main .module table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    margin: 0 !important;
+}
+
+.dashboard #content-main .module caption {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    border-radius: var(--ts-radius-card-top) var(--ts-radius-card-top) 0 0 !important;
+}
+
+.dashboard #content-main .module caption .section {
+    display: block !important;
+    margin: 0 !important;
+    padding: 8px 14px !important;
+    border-radius: 0 !important;
+}
+
+html[data-theme="light"] .dashboard #content-main .module caption,
+html[data-theme="dark"] .dashboard #content-main .module caption {
+    background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] .dashboard #content-main .module caption {
+        background: linear-gradient(135deg, #ff6347 0%, #ff7f66 100%) !important;
+    }
+}
+
+html[data-theme="dark"] #nav-sidebar .module,
+html[data-theme="dark"] #nav-sidebar .app-auth,
+html[data-theme="dark"] #nav-sidebar .app-scripts,
+html[data-theme="dark"] .dashboard #content-main .module,
+html[data-theme="dark"] #content-main,
+html[data-theme="dark"] #changelist-form,
+html[data-theme="dark"] #changelist-filter,
+html[data-theme="dark"] #content-related,
+html[data-theme="dark"] .inline-group,
+html[data-theme="dark"] .form-row,
+html[data-theme="dark"] .results,
+html[data-theme="dark"] .submit-row,
+html[data-theme="dark"] .paginator,
+html[data-theme="dark"] .object-tools {
+    border-radius: var(--ts-radius-card-dark) !important;
+}
+
+html[data-theme="dark"] #toolbar {
+    border-radius: var(--ts-radius-toolbar-dark) !important;
+}
+
+html[data-theme="dark"] #nav-filter {
+    border-radius: var(--ts-radius-panel-dark) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] #nav-sidebar .module,
+    html[data-theme="auto"] #nav-sidebar .app-auth,
+    html[data-theme="auto"] #nav-sidebar .app-scripts,
+    html[data-theme="auto"] .dashboard #content-main .module,
+    html[data-theme="auto"] #content-main,
+    html[data-theme="auto"] #changelist-form,
+    html[data-theme="auto"] #changelist-filter,
+    html[data-theme="auto"] #content-related,
+    html[data-theme="auto"] .inline-group,
+    html[data-theme="auto"] .form-row,
+    html[data-theme="auto"] .results,
+    html[data-theme="auto"] .submit-row,
+    html[data-theme="auto"] .paginator,
+    html[data-theme="auto"] .object-tools {
+        border-radius: var(--ts-radius-card-dark) !important;
+    }
+
+    html[data-theme="auto"] #toolbar {
+        border-radius: var(--ts-radius-toolbar-dark) !important;
+    }
+
+    html[data-theme="auto"] #nav-filter {
+        border-radius: var(--ts-radius-panel-dark) !important;
+    }
+}
+
+#changelist-filter ul,
+#changelist-filter li,
+#changelist-filter h3,
+#changelist-filter details,
+#changelist-filter details summary,
+#changelist-filter li.selected,
+#changelist-filter #changelist-filter-extra-actions,
+#changelist-filter #changelist-filter-extra-actions h3 {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+#changelist-filter ul,
+#changelist-filter details ul,
+#changelist-filter h3 + ul,
+#changelist-filter details + ul,
+#changelist-filter details[open] ul {
+    border-bottom: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+html[data-theme="light"] #changelist-filter li.selected,
+html[data-theme="dark"] #changelist-filter li.selected,
+html[data-theme="dark"] #changelist-filter ul,
+html[data-theme="dark"] #changelist-filter li {
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+html[data-theme="light"] #changelist-filter li.selected a,
+html[data-theme="light"] #changelist-filter li.selected a:link,
+html[data-theme="light"] #changelist-filter li.selected a:visited {
+    background: transparent !important;
+    display: inline !important;
+    color: #c94c35 !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+}
+
+html[data-theme="dark"] #changelist-filter li.selected a,
+html[data-theme="dark"] #changelist-filter li.selected a:link,
+html[data-theme="dark"] #changelist-filter li.selected a:visited {
+    display: inline !important;
+    color: #ff8a75 !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="light"] #changelist-filter li.selected::before,
+html[data-theme="dark"] #changelist-filter li.selected::before,
+html[data-theme="light"] #changelist-filter li.selected a::before,
+html[data-theme="dark"] #changelist-filter li.selected a::before {
+    border-left: 0 !important;
+    background: transparent !important;
+    content: none !important;
+}
+
+#changelist-filter li.selected {
+    position: relative !important;
+    padding-left: 14px !important;
+}
+
+#changelist-filter li.selected::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 4px !important;
+    bottom: 4px !important;
+    width: 4px !important;
+    border-radius: 2px !important;
+    background: rgba(255, 99, 71, 0.32) !important;
+}
+
+html[data-theme="light"] #changelist-filter li.selected::before {
+    background: rgba(201, 76, 53, 0.28) !important;
+}
+
+html[data-theme="dark"] #changelist-filter li.selected::before {
+    background: rgba(255, 138, 117, 0.32) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] #changelist-filter li.selected,
+    html[data-theme="auto"] #changelist-filter ul,
+    html[data-theme="auto"] #changelist-filter li {
+        background: transparent !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    html[data-theme="auto"] #changelist-filter li.selected a,
+    html[data-theme="auto"] #changelist-filter li.selected a:link,
+    html[data-theme="auto"] #changelist-filter li.selected a:visited {
+        display: inline !important;
+        color: #ff8a75 !important;
+        font-weight: 700 !important;
+        opacity: 1 !important;
+    }
+
+    html[data-theme="auto"] #changelist-filter li.selected::before,
+    html[data-theme="auto"] #changelist-filter li.selected a::before {
+        border-left: 0 !important;
+        background: transparent !important;
+        content: none !important;
+    }
+
+    html[data-theme="auto"] #changelist-filter li.selected::before {
+        background: rgba(255, 138, 117, 0.32) !important;
+    }
+
+    html[data-theme="auto"] #changelist-filter h3,
+    html[data-theme="auto"] #changelist-filter details summary {
+        padding: 0 15px !important;
+        margin-bottom: 10px !important;
+        line-height: 1.5 !important;
+    }
+
+    html[data-theme="auto"] #changelist-filter ul {
+        margin: 5px 0 !important;
+        padding: 0 15px 15px !important;
+    }
+
+    html[data-theme="auto"] #changelist-filter li {
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.5 !important;
+    }
+
+    html[data-theme="auto"] #changelist-filter li a,
+    html[data-theme="auto"] #changelist-filter li a:link,
+    html[data-theme="auto"] #changelist-filter li a:visited {
+        line-height: 1.5 !important;
+    }
+}
+
+html[data-theme="dark"] #changelist-filter h3,
+html[data-theme="dark"] #changelist-filter details summary {
+    padding: 0 15px !important;
+    margin-bottom: 10px !important;
+    line-height: 1.5 !important;
+}
+
+html[data-theme="dark"] #changelist-filter ul {
+    margin: 5px 0 !important;
+    padding: 0 15px 15px !important;
+}
+
+html[data-theme="dark"] #changelist-filter li {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+}
+
+html[data-theme="dark"] #changelist-filter li a,
+html[data-theme="dark"] #changelist-filter li a:link,
+html[data-theme="dark"] #changelist-filter li a:visited {
+    line-height: 1.5 !important;
+}
+
+#nav-sidebar .current-model th,
+#nav-sidebar .current-model td {
+    padding: 0 !important;
+    vertical-align: middle !important;
+}
+
+#nav-sidebar .current-model th a,
+#nav-sidebar .current-model td a,
+#nav-sidebar .current-model td a.addlink {
+    min-height: 42px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+#nav-sidebar .current-model th a {
+    padding: 8px 14px !important;
+}
+
+#nav-sidebar .current-model td a,
+#nav-sidebar .current-model td a.addlink {
+    padding: 8px 10px !important;
+    justify-content: center !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
+html[data-theme="light"] #nav-sidebar .current-model th,
+html[data-theme="light"] #nav-sidebar .current-model td,
+html[data-theme="light"] #nav-sidebar .current-model th a,
+html[data-theme="light"] #nav-sidebar .current-model td a,
+html[data-theme="light"] #nav-sidebar .current-model td a.addlink,
+html[data-theme="light"] #nav-sidebar .current-model td a.addlink::after {
+    background: #f7d8d0 !important;
+}
+
+html[data-theme="dark"] #nav-sidebar .current-model th,
+html[data-theme="dark"] #nav-sidebar .current-model td,
+html[data-theme="dark"] #nav-sidebar .current-model th a,
+html[data-theme="dark"] #nav-sidebar .current-model td a,
+html[data-theme="dark"] #nav-sidebar .current-model td a.addlink,
+html[data-theme="dark"] #nav-sidebar .current-model td a.addlink::after {
+    background: rgba(255, 99, 71, 0.18) !important;
+}
+
+html[data-theme="light"] #nav-sidebar .current-model td a,
+html[data-theme="light"] #nav-sidebar .current-model td a.addlink {
+    box-shadow: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] #nav-sidebar .current-model th,
+    html[data-theme="auto"] #nav-sidebar .current-model td,
+    html[data-theme="auto"] #nav-sidebar .current-model th a,
+    html[data-theme="auto"] #nav-sidebar .current-model td a,
+    html[data-theme="auto"] #nav-sidebar .current-model td a.addlink,
+    html[data-theme="auto"] #nav-sidebar .current-model td a.addlink::after {
+        background: rgba(255, 99, 71, 0.18) !important;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] div.breadcrumbs {
+        background: #3b1d19 !important;
+    }
+}
+
+#header {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    min-height: auto !important;
+    min-height: 88px !important;
+    height: 88px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+#branding,
+#user-tools {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+}
+
+.ts-brand-logo {
+    width: 96px !important;
+    height: 96px !important;
+}
+
+.ts-brand-link {
+    gap: 10px !important;
+}
+
+.ts-brand-text {
+    font-size: 0.95em !important;
+}
+
+html[data-theme="light"] .module caption,
+html[data-theme="light"] .module caption a,
+html[data-theme="light"] .module .section,
+html[data-theme="light"] .module .section:link,
+html[data-theme="light"] .module .section:visited {
+    color: #fff7f5 !important;
+}
