@@ -5,14 +5,10 @@ services:
     restart: unless-stopped
     env_file:
       - .env.production
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -45,7 +41,7 @@ services:
     command: >
       sh -c "python app/manage.py migrate &&
       python app/manage.py collectstatic --noinput &&
-      gunicorn config.wsgi:application --chdir app --bind 0.0.0.0:8000 --workers ${GUNICORN_WORKERS:-3}"
+      gunicorn config.wsgi:application --chdir app --bind 0.0.0.0:8000 --workers $${GUNICORN_WORKERS:-3}"
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/app/media
@@ -61,8 +57,6 @@ services:
       dockerfile: Dockerfile
     container_name: bot_worker_prod
     restart: unless-stopped
-    ports:
-      - "8000:8000"
     env_file:
       - .env.production
     environment:
