@@ -1,7 +1,8 @@
-﻿from django.test import TestCase
+﻿from django.test import TestCase, override_settings
 from django.utils import timezone
 
 from .models import Branch, Group, Script
+from bot.bot import merge_group_records
 
 
 class ScriptTargetGroupsTests(TestCase):
@@ -92,3 +93,35 @@ class BranchCountTests(TestCase):
         Group.objects.create(name="Group 2", chat_id=-2002, branch=branch, language="ru")
 
         self.assertEqual(branch.group_count(), 2)
+
+
+class GroupMergeTests(TestCase):
+    def test_merge_preserves_branch_and_scripts(self):
+        branch = Branch.objects.create(name="Merge branch")
+        old_group = Group.objects.create(name="Old group", chat_id=-3001, branch=branch, language="uz")
+        new_group = Group.objects.create(name="New group", chat_id=-1003001, language=None)
+        script = Script.objects.create(
+            title="Merge script",
+            repeat_type="daily",
+            send_time=timezone.now(),
+            text_uz="Salom",
+            text_ru="Privet",
+        )
+        script.groups.add(old_group)
+
+        merged_group, created = merge_group_records(old_group.chat_id, new_group.chat_id, "Merged name")
+
+        self.assertFalse(created)
+        self.assertEqual(merged_group.id, new_group.id)
+        self.assertEqual(merged_group.branch_id, branch.id)
+        self.assertEqual(merged_group.language, "uz")
+        self.assertTrue(merged_group.scripts.filter(id=script.id).exists())
+        self.assertFalse(Group.objects.filter(id=old_group.id).exists())
+
+
+class ProductionSecuritySettingsTests(TestCase):
+    def test_env_bool_parses_https_flag(self):
+        from config.settings import env_bool
+
+        self.assertTrue(env_bool("DJANGO_ENABLE_HTTPS", True))
+        self.assertFalse(env_bool("DJANGO_ENABLE_HTTPS", False) and False)

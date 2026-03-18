@@ -51,11 +51,24 @@ def merge_group_records(old_chat_id: int, new_chat_id: int, name: str):
     new_group = Group.objects.filter(chat_id=new_chat_id).first()
 
     if old_group and new_group:
+        updated_fields = ["name", "is_active"]
+
         if not new_group.language and old_group.language:
             new_group.language = old_group.language
+            updated_fields.append("language")
+
+        if new_group.branch_id is None and old_group.branch_id is not None:
+            new_group.branch = old_group.branch
+            updated_fields.append("branch")
+
         new_group.name = name
         new_group.is_active = True
-        new_group.save()
+        new_group.save(update_fields=updated_fields)
+
+        linked_scripts = list(old_group.scripts.all())
+        if linked_scripts:
+            new_group.scripts.add(*linked_scripts)
+
         old_group.delete()
         return new_group, False
 

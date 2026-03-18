@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Meridian — World News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #0e0d0b;
+      --ink-soft:  #3a3830;
+      --ink-muted: #7a7060;
+      --paper:     #f5f0e8;
+      --paper-alt: #ede8dc;
+      --rule:      #c8bfaa;
+      --red:       #c0392b;
+      --gold:      #b8960c;
+      --mono:      'JetBrains Mono', monospace;
+      --serif:     'Source Serif 4', Georgia, serif;
+      --display:   'Playfair Display', Georgia, serif;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── Masthead ── */
+    .masthead {
+      border-bottom: 3px double var(--ink);
+      padding: 0 2rem;
+      background: var(--paper);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .masthead-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-rows: auto auto;
+    }
+    .masthead-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--ink-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .masthead-logo {
+      padding: 0.6rem 0 0.4rem;
+      text-align: center;
+    }
+    .masthead-logo h1 {
+      font-family: var(--display);
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .masthead-logo .tagline {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-top: 0.15rem;
+    }
+    .masthead-nav {
+      display: flex;
+      gap: 2rem;
+      padding: 0.5rem 0;
+      border-top: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      overflow-x: auto;
+    }
+    .masthead-nav a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .masthead-nav a:hover { color: var(--red); }
+
+    /* ── Layout ── */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* ── Utilities ── */
+    .rule { border: none; border-top: 1px solid var(--rule); margin: 1.5rem 0; }
+    .rule-thick { border: none; border-top: 3px double var(--ink); margin: 1.5rem 0; }
+
+    a { color: inherit; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 3px double var(--ink);
+      padding: 1.5rem 2rem;
+      margin-top: 4rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.5s ease both; }
+  </style>
+  
+<style>
+  /* ── Section label ── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* ── Hero (first story) ── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--rule);
+    margin-bottom: 0;
+    animation: fadeUp 0.55s ease both;
+  }
+  .hero-image {
+    position: relative;
+    min-height: 380px;
+    overflow: hidden;
+  }
+  .hero-image-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.5s ease;
+  }
+  .hero:hover .hero-image-bg { transform: scale(1.03); }
+  .hero-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--red);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    font-weight: 600;
+  }
+  .hero-body {
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .hero-category {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+  .hero-summary {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .hero-meta {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.06em;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .read-more {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 2px;
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+    width: fit-content;
+  }
+  .read-more:hover { color: var(--red); border-color: var(--red); }
+
+  /* ── Grid ── */
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-top: none;
+    margin-bottom: 3rem;
+  }
+  .news-card {
+    padding: 1.6rem;
+    border-right: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+    position: relative;
+    background: var(--paper);
+    transition: background 0.2s;
+    animation: fadeUp 0.5s ease both;
+  }
+  .news-card:last-child { border-right: none; }
+  .news-card:hover { background: var(--paper-alt); }
+  .card-accent-bar {
+    height: 3px;
+    width: 40px;
+    margin-bottom: 1rem;
+    border-radius: 1px;
+  }
+  .card-category {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .card-title {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+  }
+  .card-summary {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+  .card-meta {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--rule);
+    padding-top: 0.75rem;
+  }
+
+  /* ── Bottom row (2 cards) ── */
+  .news-grid-bottom {
+    grid-template-columns: 1fr 1fr;
+  }
+  .news-grid-bottom .news-card:last-child { border-right: none; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-image { min-height: 240px; }
+    .hero-body { border-left: none; border-top: 1px solid var(--rule); }
+    .news-grid { grid-template-columns: 1fr 1fr; }
+    .news-grid .news-card:nth-child(2n) { border-right: none; }
+    .news-grid-bottom { grid-template-columns: 1fr; }
+    .news-grid-bottom .news-card { border-right: none; }
+  }
+  @media (max-width: 600px) {
+    .news-grid { grid-template-columns: 1fr; }
+    .news-card { border-right: none; }
+  }
+</style>
+
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-top">
+      <span>Est. 2019 · Global Edition</span>
+      <span id="live-date"></span>
+      <span>Vol. CCXLII · No. 071</span>
+    </div>
+    <div class="masthead-logo">
+      <h1><a href="/" style="text-decoration:none">The Meridian</a></h1>
+      <p class="tagline">Clarity · Depth · Independence</p>
+    </div>
+    <nav class="masthead-nav">
+      <a href="/">Home</a>
+      <a href="#">World</a>
+      <a href="#">Technology</a>
+      <a href="#">Finance</a>
+      <a href="#">Science</a>
+      <a href="#">Culture</a>
+      <a href="#">Health</a>
+    </nav>
+  </div>
+</header>
+
+
+<div class="page-wrap">
+
+  <p class="section-label">Top Stories — March 11, 2026</p>
+
+  
+  
+  <a href="/article/1" style="text-decoration:none; display:block">
+  <div class="hero">
+    <div class="hero-image">
+      <div class="hero-image-bg" style="background: linear-gradient(135deg, #0f2027 0%, #00d4ff22 100%);"></div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" opacity="0.15">
+          <circle cx="60" cy="60" r="55" stroke="#00d4ff" stroke-width="2"/>
+          <line x1="60" y1="5" x2="60" y2="115" stroke="#00d4ff" stroke-width="1"/>
+          <line x1="5" y1="60" x2="115" y2="60" stroke="#00d4ff" stroke-width="1"/>
+          <circle cx="60" cy="60" r="25" stroke="#00d4ff" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <span class="hero-badge">Breaking</span>
+    </div>
+    <div class="hero-body">
+      <div class="hero-category">TECHNOLOGY</div>
+      <h2 class="hero-title">OpenAI Announces GPT-5 with Unprecedented Reasoning Capabilities</h2>
+      <p class="hero-summary">The latest model demonstrates human-level performance across scientific domains, raising both excitement and concern among AI researchers worldwide.</p>
+      <div class="hero-meta">
+        <span>By Sarah Chen</span>
+        <span>March 11, 2026</span>
+        <span>4 min read</span>
+      </div>
+      <span class="read-more">Continue Reading →</span>
+    </div>
+  </div>
+  </a>
+
+  
+  <div class="news-grid">
+    
+    <a href="/article/2" style="text-decoration:none;">
+    <div class="news-card" style="animation-delay: 0.08s">
+      <div class="card-accent-bar" style="background:#4fc3f7"></div>
+      <div class="card-category" style="color:#4fc3f7">GEOPOLITICS</div>
+      <h3 class="card-title">Arctic Council Summit Ends in Landmark Climate Agreement</h3>
+      <p class="card-summary">Eight nations commit to carbon-neutral shipping lanes through the Northwest Passage by 2031 in a historic deal that redraws polar geopolitics.</p>
+      <div class="card-meta">
+        <span>Erik Halvorsen</span>
+        <span>March 10, 2026</span>
+        <span>5 min</span>
+      </div>
+    </div>
+    </a>
+    
+    <a href="/article/3" style="text-decoration:none;">
+    <div class="news-card" style="animation-delay: 0.16s">
+      <div class="card-accent-bar" style="background:#69f0ae"></div>
+      <div class="card-category" style="color:#69f0ae">FINANCE</div>
+      <h3 class="card-title">Global Markets Rally as Fed Signals Rate Cuts Ahead of Schedule</h3>
+      <p class="card-summary">Dow Jones surges 1,200 points after Fed Chair Jerome Powell hints at three rate reductions before year-end, citing cooling inflation data.</p>
+      <div class="card-meta">
+        <span>Marcus Webb</span>
+        <span>March 11, 2026</span>
+        <span>3 min</span>
+      </div>
+    </div>
+    </a>
+    
+    <a href="/article/4" style="text-decoration:none;">
+    <div class="news-card" style="animation-delay: 0.24s">
+      <div class="card-accent-bar" style="background:#e040fb"></div>
+      <div class="card-category" style="color:#e040fb">SCIENCE</div>
+      <h3 class="card-title">CERN Physicists Detect Anomaly That Could Rewrite Standard Model</h3>
+      <p class="card-summary">Unexpected decay patterns in muon collisions suggest the existence of a fifth fundamental force, sending shockwaves through the physics community.</p>
+      <div class="card-meta">
+        <span>Dr. Ines Ferreira</span>
+        <span>March 9, 2026</span>
+        <span>6 min</span>
+      </div>
+    </div>
+    </a>
+    
+  </div>
+
+  <p class="section-label" style="margin-top:2rem">More Headlines</p>
+
+  
+  <div class="news-grid news-grid-bottom">
+    
+    <a href="/article/5" style="text-decoration:none;">
+    <div class="news-card" style="animation-delay: 0.4s">
+      <div class="card-accent-bar" style="background:#ff6b6b"></div>
+      <div class="card-category" style="color:#ff6b6b">CULTURE</div>
+      <h3 class="card-title">Cannes Unveils 2026 Lineup Dominated by First-Time Directors</h3>
+      <p class="card-summary">Festival president Greta Gerwig announces a competition slate of 22 films, with 17 debut feature directors — the highest proportion in the festival&#39;s history.</p>
+      <div class="card-meta">
+        <span>Léa Moreau</span>
+        <span>March 10, 2026</span>
+        <span>4 min</span>
+      </div>
+    </div>
+    </a>
+    
+    <a href="/article/6" style="text-decoration:none;">
+    <div class="news-card" style="animation-delay: 0.5s">
+      <div class="card-accent-bar" style="background:#a5d6a7"></div>
+      <div class="card-category" style="color:#a5d6a7">HEALTH</div>
+      <h3 class="card-title">WHO Declares End to Three-Year mpox Emergency in Central Africa</h3>
+      <p class="card-summary">Following a successful vaccination campaign reaching 40 million people, the World Health Organization lifts the public health emergency designation.</p>
+      <div class="card-meta">
+        <span>Amara Diallo</span>
+        <span>March 8, 2026</span>
+        <span>3 min</span>
+      </div>
+    </div>
+    </a>
+    
+  </div>
+
+</div>
+
+
+<footer>
+  <p>&copy; 2026 The Meridian Global Press Ltd. · All rights reserved · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="74171b1a00151700341911061d101d151a5a0406110707">[email&#160;protected]</a></p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  co
