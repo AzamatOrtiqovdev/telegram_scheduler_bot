@@ -45,8 +45,8 @@ services:
       python app/manage.py collectstatic --noinput &&
       gunicorn config.wsgi:application --chdir app --bind 0.0.0.0:8000 --workers $${GUNICORN_WORKERS:-3}"
     volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/app/media
+      - /root/telegram_scheduler_bot/staticfiles:/app/staticfiles
+      - /root/telegram_scheduler_bot/media:/app/app/media
     depends_on:
       postgres:
         condition: service_healthy
@@ -67,7 +67,7 @@ services:
       REDIS_HOST: redis
     command: sh -c "cd app && celery -A config worker -l info"
     volumes:
-      - media_volume:/app/app/media
+      - /root/telegram_scheduler_bot/media:/app/app/media
     depends_on:
       postgres:
         condition: service_healthy
@@ -88,7 +88,7 @@ services:
       REDIS_HOST: redis
     command: sh -c "cd app && celery -A config beat -l info"
     volumes:
-      - media_volume:/app/app/media
+      - /root/telegram_scheduler_bot/media:/app/app/media
     depends_on:
       postgres:
         condition: service_healthy
@@ -109,7 +109,7 @@ services:
       REDIS_HOST: redis
     command: python app/bot/bot.py
     volumes:
-      - media_volume:/app/app/media
+      - /root/telegram_scheduler_bot/media:/app/app/media
     depends_on:
       postgres:
         condition: service_healthy
@@ -132,5 +132,3 @@ services:
 volumes:
   postgres_data:
   redis_data:
-  static_volume:
-  media_volume:
