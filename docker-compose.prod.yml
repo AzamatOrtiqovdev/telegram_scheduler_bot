@@ -4,7 +4,7 @@ services:
     container_name: bot_postgres_prod
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.production
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -37,7 +37,7 @@ services:
     container_name: bot_web_prod
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.production
     environment:
       USE_POSTGRES: "True"
       POSTGRES_HOST: postgres
@@ -62,7 +62,7 @@ services:
     container_name: bot_worker_prod
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.production
     environment:
       USE_POSTGRES: "True"
       POSTGRES_HOST: postgres
@@ -83,7 +83,7 @@ services:
     container_name: bot_beat_prod
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.production
     environment:
       USE_POSTGRES: "True"
       POSTGRES_HOST: postgres
@@ -104,7 +104,7 @@ services:
     container_name: bot_app_prod
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.production
     environment:
       USE_POSTGRES: "True"
       POSTGRES_HOST: postgres
