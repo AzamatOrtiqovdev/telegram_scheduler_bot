@@ -22,7 +22,34 @@ from aiogram.types import ChatMemberUpdated, Message
 from scripts.models import Group
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-WELCOME_MESSAGE = "Ассалому алейкум, я бот уведомлений Times School. Я буду сообщать вам новости 😊"
+WELCOME_MESSAGE = """
+Assalomu alaykum! 👋
+
+Bu guruhga Times Schoolning rasmiy axborot boti qo‘shildi.
+
+📢 Ushbu bot orqali siz:
+• Muhim e’lonlar
+• Dars jadvalidagi o‘zgarishlar
+• Yangiliklar va tadbirlar
+• Foydali o‘quv ma’lumotlari
+
+haqida avtomatik xabarnomalarni olasiz.
+
+Iltimos, bildirishnomalarni kuzatib boring. Rahmat! 📚
+
+
+ Здравствуйте! 👋
+
+В эту группу был добавлен официальный информационный бот Учебного центра Times school
+
+📢 Через этого бота вы будете получать:
+• Важные объявления
+• Изменения в расписании
+• Новости и мероприятия
+• Полезную учебную информацию
+
+Пожалуйста, следите за уведомлениями. Спасибо! 📚
+"""
 logger = logging.getLogger(__name__)
 
 if not BOT_TOKEN:

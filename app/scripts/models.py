@@ -73,13 +73,30 @@ class Script(models.Model):
         ordering = ["title"]
 
     def save(self, *args, **kwargs):
-        if self.pk and self._repeat_type_changed():
+        if self.pk and self._should_reset_last_sent_at():
             self.last_sent_at = None
         super().save(*args, **kwargs)
+
+    def _should_reset_last_sent_at(self) -> bool:
+        return self._repeat_type_changed() or self._one_time_send_was_rescheduled()
 
     def _repeat_type_changed(self) -> bool:
         old_script = type(self).objects.filter(pk=self.pk).only("repeat_type").first()
         return bool(old_script and old_script.repeat_type != self.repeat_type)
+
+    def _one_time_send_was_rescheduled(self) -> bool:
+        old_script = type(self).objects.filter(pk=self.pk).only(
+            "repeat_type",
+            "send_time",
+            "last_sent_at",
+        ).first()
+        return bool(
+            old_script
+            and old_script.repeat_type == "once"
+            and self.repeat_type == "once"
+            and old_script.last_sent_at
+            and old_script.send_time != self.send_time
+        )
 
     def _prefetched_relation_cache(self, relation_name: str):
         return getattr(self, "_prefetched_objects_cache", {}).get(relation_name)

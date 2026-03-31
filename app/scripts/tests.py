@@ -85,6 +85,22 @@ class ScriptTargetGroupsTests(TestCase):
 
         self.assertIsNone(script.last_sent_at)
 
+    def test_one_time_reschedule_resets_last_sent_at(self):
+        script = Script.objects.create(
+            title="One-time reschedule test",
+            repeat_type="once",
+            send_time=timezone.now(),
+            text_uz="Salom",
+        )
+        script.last_sent_at = timezone.now()
+        script.save(update_fields=["last_sent_at"])
+
+        script.send_time = timezone.now() + timezone.timedelta(hours=1)
+        script.save()
+        script.refresh_from_db()
+
+        self.assertIsNone(script.last_sent_at)
+
 
 class BranchCountTests(TestCase):
     def test_group_count_matches_attached_groups(self):
