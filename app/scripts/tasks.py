@@ -1,13 +1,17 @@
 ﻿import asyncio
 import logging
 import os
+import tempfile
+from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from aiogram import Bot
-from aiogram.types import FSInputFile
+from aiogram.types import FSInputFile, InputMediaPhoto
 from celery import shared_task
 from django.utils import timezone
 from dotenv import load_dotenv
+from PIL import Image
 
 from .models import Script
 
@@ -17,27 +21,88 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 logger = logging.getLogger(__name__)
 
 
+def _truncate_to_minute(value):
+    return value.replace(second=0, microsecond=0)
+
+
+def _is_same_or_past_minute(now, scheduled_time) -> bool:
+    return _truncate_to_minute(now) >= _truncate_to_minute(scheduled_time)
+
+
+def _has_reached_scheduled_clock_time(now, scheduled_time) -> bool:
+    current_minute = (now.hour, now.minute)
+    scheduled_minute = (scheduled_time.hour, scheduled_time.minute)
+    return current_minute >= scheduled_minute
+
+
+TELEGRAM_MAX_PHOTO_DIMENSION_SUM = 10000
+
+
+def _needs_photo_resize(width: int, height: int) -> bool:
+    return width + height > TELEGRAM_MAX_PHOTO_DIMENSION_SUM
+
+
+def _normalized_photo_path(image_path: str, temp_dir: str) -> str:
+    with Image.open(image_path) as image:
+        image = image.convert("RGB")
+        width, height = image.size
+
+        if not _needs_photo_resize(width, height):
+            return image_path
+
+        scale = (TELEGRAM_MAX_PHOTO_DIMENSION_SUM - 1) / (width + height)
+        resized = image.resize((max(1, int(width * scale)), max(1, int(height * scale))))
+        normalized_path = Path(temp_dir) / f"normalized_{Path(image_path).stem}_{uuid4().hex}.jpg"
+        resized.save(normalized_path, format="JPEG", quality=95)
+        logger.info(
+            "Resized image '%s' from %sx%s to %sx%s for Telegram photo constraints",
+            image_path,
+            width,
+            height,
+            resized.width,
+            resized.height,
+        )
+        return str(normalized_path)
+
+
+def _normalized_photo_paths(image_paths: list[str], temp_dir: str) -> list[str]:
+    return [_normalized_photo_path(image_path, temp_dir) for image_path in image_paths]
+
+
 async def send_telegram_messages(messages: list[dict[str, Any]]) -> None:
     if not BOT_TOKEN:
         raise RuntimeError("BOT_TOKEN is not configured")
 
     bot = Bot(token=BOT_TOKEN)
     try:
-        for message in messages:
-            if message["image_path"]:
-                photo = FSInputFile(message["image_path"])
-                await bot.send_photo(
-                    chat_id=message["chat_id"],
-                    photo=photo,
-                    caption=message["text"] or "",
-                )
-                logger.info("Sent photo to group '%s'", message["group_name"])
-            else:
-                await bot.send_message(
-                    chat_id=message["chat_id"],
-                    text=message["text"] or "",
-                )
-                logger.info("Sent text to group '%s'", message["group_name"])
+        with tempfile.TemporaryDirectory(prefix="telegram-script-images-") as temp_dir:
+            for message in messages:
+                image_paths = _normalized_photo_paths(message["image_paths"], temp_dir)
+                text = message["text"] or ""
+
+                if len(image_paths) > 1:
+                    media = []
+                    for index, image_path in enumerate(image_paths):
+                        media_item = InputMediaPhoto(media=FSInputFile(image_path))
+                        if index == 0 and text:
+                            media_item.caption = text
+                        media.append(media_item)
+
+                    await bot.send_media_group(chat_id=message["chat_id"], media=media)
+                    logger.info("Sent %s photos to group '%s'", len(image_paths), message["group_name"])
+                elif image_paths:
+                    await bot.send_photo(
+                        chat_id=message["chat_id"],
+                        photo=FSInputFile(image_paths[0]),
+                        caption=text,
+                    )
+                    logger.info("Sent photo to group '%s'", message["group_name"])
+                elif text:
+                    await bot.send_message(
+                        chat_id=message["chat_id"],
+                        text=text,
+                    )
+                    logger.info("Sent text to group '%s'", message["group_name"])
     finally:
         await bot.session.close()
 
@@ -72,14 +137,13 @@ def _is_due_once(script: Script, now, send_time) -> bool:
 def _is_due_monthly(script: Script, now, send_time) -> bool:
     return (
         now.day == send_time.day
-        and now.hour == send_time.hour
-        and now.minute == send_time.minute
+        and _has_reached_scheduled_clock_time(now, send_time)
         and not _was_sent_this_month(script, now)
     )
 
 
 def _is_due_daily(script: Script, now, send_time) -> bool:
-    return now.hour == send_time.hour and now.minute == send_time.minute and not _was_sent_today(script, now)
+    return _has_reached_scheduled_clock_time(now, send_time) and not _was_sent_today(script, now)
 
 
 def _should_send_script(script: Script, now) -> bool:
@@ -125,19 +189,19 @@ def _resolve_group_text(script: Script, group) -> str | None:
 
 
 def _build_messages(script: Script) -> list[dict[str, Any]]:
-    image_path = script.image.path if script.image else None
+    image_paths = script.get_image_paths()
     messages: list[dict[str, Any]] = []
 
     for group in script.get_target_groups():
         text = _resolve_group_text(script, group)
-        if not text and not image_path:
+        if not text and not image_paths:
             logger.debug("Skipping group '%s' because script has no suitable content", group.name)
             continue
 
-        if not text and image_path and group.language not in {"uz", "ru"}:
+        if not text and image_paths and group.language not in {"uz", "ru"}:
             continue
 
-        if text is None and image_path and group.language in {"uz", "ru"}:
+        if text is None and image_paths and group.language in {"uz", "ru"}:
             text = ""
 
         messages.append(
@@ -145,7 +209,7 @@ def _build_messages(script: Script) -> list[dict[str, Any]]:
                 "chat_id": group.chat_id,
                 "text": text,
                 "group_name": group.name,
-                "image_path": image_path,
+                "image_paths": image_paths,
             }
         )
 
@@ -159,6 +223,7 @@ def send_scheduled_scripts() -> None:
         Script.objects.filter(is_active=True).prefetch_related(
             "branches__groups",
             "groups",
+            "images",
         )
     )
 

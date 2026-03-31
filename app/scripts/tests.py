@@ -1,7 +1,11 @@
-﻿from django.test import TestCase, override_settings
+from pathlib import Path
+import tempfile
+
+from django.test import TestCase, override_settings
 from django.utils import timezone
 
-from .models import Branch, Group, Script
+from .models import Branch, Group, Script, ScriptImage
+from .tasks import _is_due_daily, _is_due_monthly, _is_due_once, _needs_photo_resize, _normalized_photo_path
 from bot.bot import merge_group_records
 
 
@@ -141,3 +145,95 @@ class ProductionSecuritySettingsTests(TestCase):
 
         self.assertTrue(env_bool("DJANGO_ENABLE_HTTPS", True))
         self.assertFalse(env_bool("DJANGO_ENABLE_HTTPS", False) and False)
+
+
+class ScriptScheduleLogicTests(TestCase):
+    def test_one_time_script_is_due_on_exact_scheduled_minute_if_not_sent(self):
+        send_time = timezone.now().replace(second=0, microsecond=0)
+        now = send_time
+        script = Script(repeat_type="once", send_time=send_time, last_sent_at=None)
+
+        self.assertTrue(_is_due_once(script, now, send_time))
+
+    def test_one_time_script_is_not_due_after_scheduled_minute(self):
+        send_time = timezone.now().replace(second=0, microsecond=0)
+        now = send_time + timezone.timedelta(minutes=1)
+        script = Script(repeat_type="once", send_time=send_time, last_sent_at=None)
+
+        self.assertFalse(_is_due_once(script, now, send_time))
+
+    def test_daily_script_is_due_after_scheduled_minute_if_not_sent_today(self):
+        send_time = timezone.now().replace(hour=9, minute=0, second=0, microsecond=0)
+        now = send_time + timezone.timedelta(minutes=15)
+        script = Script(repeat_type="daily", send_time=send_time, last_sent_at=None)
+
+        self.assertTrue(_is_due_daily(script, now, send_time))
+
+    def test_monthly_script_is_due_after_scheduled_minute_if_not_sent_this_month(self):
+        send_time = timezone.now().replace(day=1, hour=9, minute=0, second=0, microsecond=0)
+        now = send_time + timezone.timedelta(minutes=15)
+        script = Script(repeat_type="monthly", send_time=send_time, last_sent_at=None)
+
+        self.assertTrue(_is_due_monthly(script, now, send_time))
+
+    def test_daily_script_is_not_due_before_scheduled_time_today(self):
+        send_time = timezone.now().replace(hour=9, minute=0, second=0, microsecond=0)
+        now = send_time.replace(hour=8, minute=30)
+        script = Script(repeat_type="daily", send_time=send_time, last_sent_at=None)
+
+        self.assertFalse(_is_due_daily(script, now, send_time))
+
+    def test_monthly_script_is_not_due_before_scheduled_time_on_matching_day(self):
+        send_time = timezone.now().replace(day=1, hour=9, minute=0, second=0, microsecond=0)
+        now = send_time.replace(hour=8, minute=30)
+        script = Script(repeat_type="monthly", send_time=send_time, last_sent_at=None)
+
+        self.assertFalse(_is_due_monthly(script, now, send_time))
+
+
+class TelegramPhotoConstraintTests(TestCase):
+    def test_large_photo_dimension_sum_requires_resize(self):
+        self.assertTrue(_needs_photo_resize(8706, 1396))
+
+    def test_normal_photo_dimensions_do_not_require_resize(self):
+        self.assertFalse(_needs_photo_resize(2036, 1732))
+
+
+class ScriptImagePathTests(TestCase):
+    def test_legacy_image_is_used_when_no_script_images_exist(self):
+        script = Script.objects.create(
+            title="Legacy only",
+            repeat_type="once",
+            send_time=timezone.now(),
+            image="scripts/legacy.jpg",
+        )
+
+        self.assertEqual(script.get_image_paths(), [script.image.path])
+
+    def test_script_images_take_precedence_over_hidden_legacy_image(self):
+        script = Script.objects.create(
+            title="Script images first",
+            repeat_type="once",
+            send_time=timezone.now(),
+            image="scripts/legacy.jpg",
+        )
+        extra = ScriptImage.objects.create(script=script, image="scripts/extra.jpg", sort_order=0)
+
+        self.assertEqual(script.get_image_paths(), [extra.image.path])
+
+
+class TelegramPhotoNormalizationTests(TestCase):
+    def test_normalized_photo_path_uses_unique_names_for_same_stem(self):
+        with tempfile.TemporaryDirectory() as source_dir, tempfile.TemporaryDirectory() as temp_dir:
+            first_source = Path(source_dir) / "banner.png"
+            second_source = Path(source_dir) / "banner.jpg"
+
+            from PIL import Image
+
+            Image.new("RGB", (8706, 1396), color="white").save(first_source)
+            Image.new("RGB", (8706, 1396), color="black").save(second_source)
+
+            first = _normalized_photo_path(str(first_source), temp_dir)
+            second = _normalized_photo_path(str(second_source), temp_dir)
+
+        self.assertNotEqual(first, second)

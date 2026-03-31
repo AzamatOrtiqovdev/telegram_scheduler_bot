@@ -1,12 +1,18 @@
 from django.contrib import admin
 from django.db.models import Count, Prefetch, Q
 
-from .models import Branch, Group, Script
+from .models import Branch, Group, Script, ScriptImage
 
 ADMIN_SITE_TITLE = "Times School Notification bot"
 CONTENT_TEXT_QUERY = (Q(text_uz__isnull=False) & ~Q(text_uz="")) | (Q(text_ru__isnull=False) & ~Q(text_ru=""))
-CONTENT_IMAGE_QUERY = Q(image__isnull=False) & ~Q(image="")
-SCRIPT_BRANCH_PREFETCH = Prefetch("branches", queryset=Branch.objects.prefetch_related("groups"))
+CONTENT_IMAGE_QUERY = (Q(image__isnull=False) & ~Q(image="")) | (Q(images__image__isnull=False) & ~Q(images__image=""))
+SCRIPT_BRANCH_PREFETCH = Prefetch(
+    "branches",
+    queryset=Branch.objects.filter(is_active=True).only("id", "name", "is_active").prefetch_related(
+        Prefetch("groups", queryset=Group.objects.only("id", "branch_id"))
+    ),
+)
+SCRIPT_GROUP_PREFETCH = Prefetch("groups", queryset=Group.objects.only("id", "branch_id", "name"))
 
 admin.site.site_header = ADMIN_SITE_TITLE
 admin.site.site_title = ADMIN_SITE_TITLE
@@ -102,6 +108,13 @@ class ScriptContentFilter(MappedValueFilter):
         )
 
 
+class ScriptImageInline(admin.TabularInline):
+    model = ScriptImage
+    extra = 1
+    fields = ("image", "sort_order")
+    ordering = ("sort_order", "id")
+
+
 class ScriptSendStatusFilter(MappedValueFilter):
     title = "send status"
     parameter_name = "send_status"
@@ -160,9 +173,12 @@ class ScriptAdmin(admin.ModelAdmin):
     search_fields = ("title", "text_uz", "text_ru", "branches__name", "groups__name")
     filter_horizontal = ("branches", "groups")
     date_hierarchy = "send_time"
+    inlines = (ScriptImageInline,)
+    change_form_template = "admin/scripts/script/change_form.html"
     fieldsets = (
-        (None, {"fields": ("title", "repeat_type", "send_time", "is_active")}),
-        ("Content", {"fields": ("text_uz", "text_ru", "image")}),
+        (None, {"fields": ("title", "repeat_type", "send_time")}),
+        ("Content", {"fields": ("text_uz", "text_ru")} ),
+        ("Status", {"fields": ("is_active",)}),
         (
             "Recipients",
             {
@@ -176,15 +192,15 @@ class ScriptAdmin(admin.ModelAdmin):
     )
 
     def get_queryset(self, request):
-        return (
-            super()
-            .get_queryset(request)
-            .annotate(
-                branches_count=Count("branches", distinct=True),
-                groups_count=Count("groups", distinct=True),
-            )
-            .prefetch_related(SCRIPT_BRANCH_PREFETCH, "groups")
+        queryset = super().get_queryset(request).annotate(
+            branches_count=Count("branches", distinct=True),
+            groups_count=Count("groups", distinct=True),
         )
+
+        if request.resolver_match and request.resolver_match.url_name == "scripts_script_changelist":
+            return queryset.prefetch_related(SCRIPT_BRANCH_PREFETCH, SCRIPT_GROUP_PREFETCH)
+
+        return queryset
 
 original_get_app_list = admin.site.get_app_list
 admin.site.get_app_list = _filtered_app_list

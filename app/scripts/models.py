@@ -143,5 +143,26 @@ class Script(models.Model):
     def target_group_count(self):
         return len(self._get_target_group_ids())
 
+    def get_image_paths(self) -> list[str]:
+        image_paths = [extra.image.path for extra in self.images.all() if extra.image]
+
+        if image_paths:
+            return image_paths
+        if self.image:
+            return [self.image.path]
+        return []
+
     def __str__(self):
         return self.title
+
+
+class ScriptImage(models.Model):
+    script = models.ForeignKey(Script, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to="scripts/")
+    sort_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["sort_order", "id"]
+
+    def __str__(self):
+        return f"{self.script.title} image {self.pk}"
