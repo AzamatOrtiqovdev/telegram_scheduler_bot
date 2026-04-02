@@ -71,3 +71,23 @@ htmlcov/
 # ==============================
 .idea/
 ADMIN_DESIGN_DOCUMENTATION.md
+
+# ==============================
+# Windows metadata
+# ==============================
+*:Zone.Identifier
+
+# ==============================
+# Local backups / dumps
+# ==============================
+*.sql
+*.dump
+*.bak
+backup.sql
+
+# ==============================
+# SQLite runtime artifacts
+# ==============================
+*.sqlite3-shm
+*.sqlite3-wal
+*.sqlite3-journal
