@@ -105,6 +105,34 @@ class ScriptTargetGroupsTests(TestCase):
 
         self.assertIsNone(script.last_sent_at)
 
+    def test_daily_send_time_change_resets_last_sent_at(self):
+        script = self.create_script(title="Daily reschedule test")
+        script.last_sent_at = timezone.now()
+        script.save(update_fields=["last_sent_at"])
+
+        script.send_time = timezone.now() + timezone.timedelta(hours=1)
+        script.save()
+        script.refresh_from_db()
+
+        self.assertIsNone(script.last_sent_at)
+
+    def test_recurring_reactivation_resets_last_sent_at(self):
+        script = Script.objects.create(
+            title="Monthly reactivation test",
+            repeat_type="monthly",
+            send_time=timezone.now(),
+            text_uz="Salom",
+        )
+        script.last_sent_at = timezone.now()
+        script.is_active = False
+        script.save(update_fields=["last_sent_at", "is_active"])
+
+        script.is_active = True
+        script.save()
+        script.refresh_from_db()
+
+        self.assertIsNone(script.last_sent_at)
+
 
 class BranchCountTests(TestCase):
     def test_group_count_matches_attached_groups(self):

@@ -1,4 +1,4 @@
-﻿from django.db import models
+from django.db import models
 
 
 class Branch(models.Model):
@@ -78,24 +78,44 @@ class Script(models.Model):
         super().save(*args, **kwargs)
 
     def _should_reset_last_sent_at(self) -> bool:
-        return self._repeat_type_changed() or self._one_time_send_was_rescheduled()
-
-    def _repeat_type_changed(self) -> bool:
-        old_script = type(self).objects.filter(pk=self.pk).only("repeat_type").first()
-        return bool(old_script and old_script.repeat_type != self.repeat_type)
-
-    def _one_time_send_was_rescheduled(self) -> bool:
         old_script = type(self).objects.filter(pk=self.pk).only(
             "repeat_type",
             "send_time",
             "last_sent_at",
+            "is_active",
         ).first()
+        if not old_script:
+            return False
+
         return bool(
-            old_script
-            and old_script.repeat_type == "once"
+            old_script.repeat_type != self.repeat_type
+            or self._one_time_send_was_rescheduled(old_script)
+            or self._recurring_send_time_changed(old_script)
+            or self._recurring_script_reactivated(old_script)
+        )
+
+    def _one_time_send_was_rescheduled(self, old_script) -> bool:
+        return bool(
+            old_script.repeat_type == "once"
             and self.repeat_type == "once"
             and old_script.last_sent_at
             and old_script.send_time != self.send_time
+        )
+
+    def _recurring_send_time_changed(self, old_script) -> bool:
+        return bool(
+            old_script.repeat_type in {"daily", "monthly"}
+            and self.repeat_type == old_script.repeat_type
+            and old_script.last_sent_at
+            and old_script.send_time != self.send_time
+        )
+
+    def _recurring_script_reactivated(self, old_script) -> bool:
+        return bool(
+            old_script.repeat_type in {"daily", "monthly"}
+            and old_script.last_sent_at
+            and not old_script.is_active
+            and self.is_active
         )
 
     def _prefetched_relation_cache(self, relation_name: str):
