@@ -70,6 +70,21 @@ class GroupBranchAssignmentFilter(MappedValueFilter):
         )
 
 
+class GroupBranchStatusFilter(MappedValueFilter):
+    title = "branch status"
+    parameter_name = "branch_status"
+    value_map = {
+        "active": lambda qs: qs.filter(branch__is_active=True),
+        "inactive": lambda qs: qs.filter(branch__is_active=False),
+    }
+
+    def lookups(self, request, model_admin):
+        return (
+            ("active", "Branch is active"),
+            ("inactive", "Branch is inactive"),
+        )
+
+
 class ScriptRecipientModeFilter(MappedValueFilter):
     title = "recipient mode"
     parameter_name = "recipient_mode"
@@ -146,7 +161,7 @@ class BranchAdmin(admin.ModelAdmin):
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_display = ("name", "branch", "language", "chat_id", "is_active")
-    list_filter = (GroupBranchAssignmentFilter, "branch", "language", "is_active", "branch__is_active")
+    list_filter = (GroupBranchAssignmentFilter, GroupBranchStatusFilter, "branch", "language", "is_active")
     search_fields = ("name", "chat_id", "branch__name")
     autocomplete_fields = ("branch",)
     list_select_related = ("branch",)
