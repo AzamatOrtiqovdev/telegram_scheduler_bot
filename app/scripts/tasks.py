@@ -1,8 +1,10 @@
-﻿import asyncio
+import asyncio
 import logging
 import os
 import tempfile
+import time
 from pathlib import Path
+from contextlib import contextmanager
 from typing import Any
 from uuid import uuid4
 
@@ -12,6 +14,7 @@ from celery import shared_task
 from django.utils import timezone
 from dotenv import load_dotenv
 from PIL import Image
+import redis
 
 from .models import Script
 
@@ -19,6 +22,11 @@ load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 logger = logging.getLogger(__name__)
+REDIS_URL = os.getenv("CELERY_BROKER_URL") or (
+    f"redis://{os.getenv('REDIS_HOST', 'redis')}:{os.getenv('REDIS_PORT', '6379')}/0"
+)
+SCHEDULER_LOCK_KEY = "scripts:send_scheduled_scripts:lock"
+SCHEDULER_LOCK_TTL_SECONDS = int(os.getenv("SCHEDULER_LOCK_TTL_SECONDS", "300"))
 
 
 def _truncate_to_minute(value):
@@ -35,7 +43,12 @@ def _has_reached_scheduled_clock_time(now, scheduled_time) -> bool:
     return current_minute >= scheduled_minute
 
 
+def _is_exact_scheduled_minute(now, scheduled_time) -> bool:
+    return (now.hour, now.minute) == (scheduled_time.hour, scheduled_time.minute)
+
+
 TELEGRAM_MAX_PHOTO_DIMENSION_SUM = 10000
+TELEGRAM_MEDIA_GROUP_LIMIT = 10
 
 
 def _needs_photo_resize(width: int, height: int) -> bool:
@@ -69,6 +82,26 @@ def _normalized_photo_paths(image_paths: list[str], temp_dir: str) -> list[str]:
     return [_normalized_photo_path(image_path, temp_dir) for image_path in image_paths]
 
 
+@contextmanager
+def _task_lock(lock_key: str, ttl_seconds: int):
+    client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
+    lock_value = str(time.time_ns())
+    acquired = client.set(lock_key, lock_value, nx=True, ex=ttl_seconds)
+    try:
+        yield bool(acquired), client, lock_value
+    finally:
+        if not acquired:
+            return
+        release_script = """
+        if redis.call('get', KEYS[1]) == ARGV[1] then
+            return redis.call('del', KEYS[1])
+        else
+            return 0
+        end
+        """
+        client.eval(release_script, 1, lock_key, lock_value)
+
+
 async def send_telegram_messages(messages: list[dict[str, Any]]) -> None:
     if not BOT_TOKEN:
         raise RuntimeError("BOT_TOKEN is not configured")
@@ -76,33 +109,49 @@ async def send_telegram_messages(messages: list[dict[str, Any]]) -> None:
     bot = Bot(token=BOT_TOKEN)
     try:
         with tempfile.TemporaryDirectory(prefix="telegram-script-images-") as temp_dir:
+            sent_count = 0
+            failed_count = 0
             for message in messages:
-                image_paths = _normalized_photo_paths(message["image_paths"], temp_dir)
-                text = message["text"] or ""
+                try:
+                    image_paths = _normalized_photo_paths(message["image_paths"], temp_dir)
+                    text = message["text"] or ""
 
-                if len(image_paths) > 1:
-                    media = []
-                    for index, image_path in enumerate(image_paths):
-                        media_item = InputMediaPhoto(media=FSInputFile(image_path))
-                        if index == 0 and text:
-                            media_item.caption = text
-                        media.append(media_item)
+                    if len(image_paths) > 1:
+                        # Telegram allows up to 10 media items per album.
+                        chunked_paths = [
+                            image_paths[index : index + TELEGRAM_MEDIA_GROUP_LIMIT]
+                            for index in range(0, len(image_paths), TELEGRAM_MEDIA_GROUP_LIMIT)
+                        ]
+                        for chunk_index, chunk in enumerate(chunked_paths):
+                            media = []
+                            for index, image_path in enumerate(chunk):
+                                media_item = InputMediaPhoto(media=FSInputFile(image_path))
+                                if chunk_index == 0 and index == 0 and text:
+                                    media_item.caption = text
+                                media.append(media_item)
 
-                    await bot.send_media_group(chat_id=message["chat_id"], media=media)
-                    logger.info("Sent %s photos to group '%s'", len(image_paths), message["group_name"])
-                elif image_paths:
-                    await bot.send_photo(
-                        chat_id=message["chat_id"],
-                        photo=FSInputFile(image_paths[0]),
-                        caption=text,
-                    )
-                    logger.info("Sent photo to group '%s'", message["group_name"])
-                elif text:
-                    await bot.send_message(
-                        chat_id=message["chat_id"],
-                        text=text,
-                    )
-                    logger.info("Sent text to group '%s'", message["group_name"])
+                            await bot.send_media_group(chat_id=message["chat_id"], media=media)
+                        logger.info("Sent %s photos to group '%s'", len(image_paths), message["group_name"])
+                        sent_count += 1
+                    elif image_paths:
+                        await bot.send_photo(
+                            chat_id=message["chat_id"],
+                            photo=FSInputFile(image_paths[0]),
+                            caption=text,
+                        )
+                        logger.info("Sent photo to group '%s'", message["group_name"])
+                        sent_count += 1
+                    elif text:
+                        await bot.send_message(
+                            chat_id=message["chat_id"],
+                            text=text,
+                        )
+                        logger.info("Sent text to group '%s'", message["group_name"])
+                        sent_count += 1
+                except Exception:
+                    failed_count += 1
+                    logger.exception("Failed sending message to group '%s'", message["group_name"])
+            logger.info("Telegram send batch finished: sent=%s failed=%s", sent_count, failed_count)
     finally:
         await bot.session.close()
 
@@ -128,8 +177,7 @@ def _is_due_once(script: Script, now, send_time) -> bool:
         now.year == send_time.year
         and now.month == send_time.month
         and now.day == send_time.day
-        and now.hour == send_time.hour
-        and now.minute == send_time.minute
+        and _is_exact_scheduled_minute(now, send_time)
         and not script.last_sent_at
     )
 
@@ -137,13 +185,13 @@ def _is_due_once(script: Script, now, send_time) -> bool:
 def _is_due_monthly(script: Script, now, send_time) -> bool:
     return (
         now.day == send_time.day
-        and _has_reached_scheduled_clock_time(now, send_time)
+        and _is_exact_scheduled_minute(now, send_time)
         and not _was_sent_this_month(script, now)
     )
 
 
 def _is_due_daily(script: Script, now, send_time) -> bool:
-    return _has_reached_scheduled_clock_time(now, send_time) and not _was_sent_today(script, now)
+    return _is_exact_scheduled_minute(now, send_time) and not _was_sent_today(script, now)
 
 
 def _should_send_script(script: Script, now) -> bool:
@@ -218,6 +266,21 @@ def _build_messages(script: Script) -> list[dict[str, Any]]:
 
 @shared_task
 def send_scheduled_scripts() -> None:
+    try:
+        with _task_lock(SCHEDULER_LOCK_KEY, SCHEDULER_LOCK_TTL_SECONDS) as (
+            lock_acquired,
+            _client,
+            _lock_value,
+        ):
+            if not lock_acquired:
+                logger.warning("Skipping scheduled send: previous run is still in progress")
+                return
+            _send_scheduled_scripts_internal()
+    except redis.RedisError:
+        logger.exception("Redis lock unavailable, skipping scheduled send for safety")
+
+
+def _send_scheduled_scripts_internal() -> None:
     now = timezone.localtime()
     scripts = list(
         Script.objects.filter(is_active=True).prefetch_related(

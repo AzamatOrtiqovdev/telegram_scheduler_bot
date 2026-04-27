@@ -2154,3 +2154,46 @@
     html[data-theme="light"] .module .section:visited {
         color: #fff7f5 !important;
     }
+
+    /* Keep sidebar last row visually single in dark and auto-dark */
+    html[data-theme="dark"] #nav-sidebar tbody tr th,
+    html[data-theme="dark"] #nav-sidebar tbody tr td {
+        border-radius: 0 !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar tbody tr th a,
+    html[data-theme="dark"] #nav-sidebar tbody tr td a,
+    html[data-theme="dark"] #nav-sidebar tbody tr td a.addlink,
+    html[data-theme="dark"] #nav-sidebar tbody tr td a.addlink::after {
+        border-radius: 0 !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar tbody tr:last-child th {
+        border-bottom-left-radius: 18px !important;
+    }
+
+    html[data-theme="dark"] #nav-sidebar tbody tr:last-child td {
+        border-bottom-right-radius: 18px !important;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        html[data-theme="auto"] #nav-sidebar tbody tr th,
+        html[data-theme="auto"] #nav-sidebar tbody tr td {
+            border-radius: 0 !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar tbody tr th a,
+        html[data-theme="auto"] #nav-sidebar tbody tr td a,
+        html[data-theme="auto"] #nav-sidebar tbody tr td a.addlink,
+        html[data-theme="auto"] #nav-sidebar tbody tr td a.addlink::after {
+            border-radius: 0 !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar tbody tr:last-child th {
+            border-bottom-left-radius: 18px !important;
+        }
+
+        html[data-theme="auto"] #nav-sidebar tbody tr:last-child td {
+            border-bottom-right-radius: 18px !important;
+        }
+    }
