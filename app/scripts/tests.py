@@ -190,6 +190,13 @@ class ScriptScheduleLogicTests(TestCase):
 
         self.assertFalse(_is_due_once(script, now, send_time))
 
+    def test_one_time_script_is_not_due_before_scheduled_minute(self):
+        send_time = timezone.now().replace(second=0, microsecond=0)
+        now = send_time - timezone.timedelta(minutes=1)
+        script = Script(repeat_type="once", send_time=send_time, last_sent_at=None)
+
+        self.assertFalse(_is_due_once(script, now, send_time))
+
     def test_daily_script_is_due_after_scheduled_minute_if_not_sent_today(self):
         send_time = timezone.now().replace(hour=9, minute=0, second=0, microsecond=0)
         now = send_time + timezone.timedelta(minutes=15)
