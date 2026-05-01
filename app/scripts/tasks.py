@@ -1,8 +1,10 @@
 import asyncio
+import html
 import logging
 import os
 import tempfile
 import time
+import re
 from pathlib import Path
 from contextlib import contextmanager
 from typing import Any
@@ -49,6 +51,8 @@ def _is_exact_scheduled_minute(now, scheduled_time) -> bool:
 
 TELEGRAM_MAX_PHOTO_DIMENSION_SUM = 10000
 TELEGRAM_MEDIA_GROUP_LIMIT = 10
+TELEGRAM_HTML_PARSE_MODE = "HTML"
+ALLOWED_HTML_TAGS = ("b", "strong", "i", "em", "u", "s", "code", "pre")
 
 
 def _needs_photo_resize(width: int, height: int) -> bool:
@@ -80,6 +84,82 @@ def _normalized_photo_path(image_path: str, temp_dir: str) -> str:
 
 def _normalized_photo_paths(image_paths: list[str], temp_dir: str) -> list[str]:
     return [_normalized_photo_path(image_path, temp_dir) for image_path in image_paths]
+
+
+def _prepare_telegram_html_text(raw_text: str) -> str:
+    """Escape unsafe HTML while allowing basic Telegram formatting tags."""
+    escaped_text = html.escape(raw_text or "", quote=False)
+    for tag in ALLOWED_HTML_TAGS:
+        escaped_text = re.sub(
+            rf"&lt;{tag}&gt;",
+            f"<{tag}>",
+            escaped_text,
+            flags=re.IGNORECASE,
+        )
+        escaped_text = re.sub(
+            rf"&lt;/{tag}&gt;",
+            f"</{tag}>",
+            escaped_text,
+            flags=re.IGNORECASE,
+        )
+    return escaped_text
+
+
+async def _send_text_message_with_fallback(bot: Bot, chat_id: int, text: str) -> None:
+    try:
+        await bot.send_message(
+            chat_id=chat_id,
+            text=text,
+            parse_mode=TELEGRAM_HTML_PARSE_MODE,
+        )
+    except Exception:
+        logger.exception("Failed to send HTML text, retrying as plain text for chat_id=%s", chat_id)
+        await bot.send_message(chat_id=chat_id, text=text)
+
+
+async def _send_photo_with_fallback(bot: Bot, chat_id: int, image_path: str, caption: str) -> None:
+    try:
+        await bot.send_photo(
+            chat_id=chat_id,
+            photo=FSInputFile(image_path),
+            caption=caption,
+            parse_mode=TELEGRAM_HTML_PARSE_MODE,
+        )
+    except Exception:
+        logger.exception("Failed to send HTML caption, retrying as plain text for chat_id=%s", chat_id)
+        await bot.send_photo(
+            chat_id=chat_id,
+            photo=FSInputFile(image_path),
+            caption=caption,
+        )
+
+
+async def _send_media_group_with_fallback(
+    bot: Bot,
+    chat_id: int,
+    chunked_paths: list[list[str]],
+    text: str,
+) -> None:
+    try:
+        for chunk_index, chunk in enumerate(chunked_paths):
+            media = []
+            for index, image_path in enumerate(chunk):
+                media_item = InputMediaPhoto(media=FSInputFile(image_path))
+                if chunk_index == 0 and index == 0 and text:
+                    media_item.caption = text
+                    media_item.parse_mode = TELEGRAM_HTML_PARSE_MODE
+                media.append(media_item)
+            await bot.send_media_group(chat_id=chat_id, media=media)
+    except Exception:
+        logger.exception("Failed to send HTML media caption, retrying as plain captions for chat_id=%s", chat_id)
+        for chunk_index, chunk in enumerate(chunked_paths):
+            media = []
+            for index, image_path in enumerate(chunk):
+                media_item = InputMediaPhoto(media=FSInputFile(image_path))
+                if chunk_index == 0 and index == 0 and text:
+                    media_item.caption = text
+                media.append(media_item)
+            await bot.send_media_group(chat_id=chat_id, media=media)
 
 
 @contextmanager
@@ -114,7 +194,7 @@ async def send_telegram_messages(messages: list[dict[str, Any]]) -> None:
             for message in messages:
                 try:
                     image_paths = _normalized_photo_paths(message["image_paths"], temp_dir)
-                    text = message["text"] or ""
+                    text = _prepare_telegram_html_text(message["text"] or "")
 
                     if len(image_paths) > 1:
                         # Telegram allows up to 10 media items per album.
@@ -122,27 +202,26 @@ async def send_telegram_messages(messages: list[dict[str, Any]]) -> None:
                             image_paths[index : index + TELEGRAM_MEDIA_GROUP_LIMIT]
                             for index in range(0, len(image_paths), TELEGRAM_MEDIA_GROUP_LIMIT)
                         ]
-                        for chunk_index, chunk in enumerate(chunked_paths):
-                            media = []
-                            for index, image_path in enumerate(chunk):
-                                media_item = InputMediaPhoto(media=FSInputFile(image_path))
-                                if chunk_index == 0 and index == 0 and text:
-                                    media_item.caption = text
-                                media.append(media_item)
-
-                            await bot.send_media_group(chat_id=message["chat_id"], media=media)
+                        await _send_media_group_with_fallback(
+                            bot=bot,
+                            chat_id=message["chat_id"],
+                            chunked_paths=chunked_paths,
+                            text=text,
+                        )
                         logger.info("Sent %s photos to group '%s'", len(image_paths), message["group_name"])
                         sent_count += 1
                     elif image_paths:
-                        await bot.send_photo(
+                        await _send_photo_with_fallback(
+                            bot=bot,
                             chat_id=message["chat_id"],
-                            photo=FSInputFile(image_paths[0]),
+                            image_path=image_paths[0],
                             caption=text,
                         )
                         logger.info("Sent photo to group '%s'", message["group_name"])
                         sent_count += 1
                     elif text:
-                        await bot.send_message(
+                        await _send_text_message_with_fallback(
+                            bot=bot,
                             chat_id=message["chat_id"],
                             text=text,
                         )
